@@ -1,0 +1,132 @@
+/* Reset básico */
+:root {
+  /* Colors */
+  --color-fondo-externo: #737aa8; /* Color azulado para el fondo de la página */
+  --white-color: #fff;
+  --dark-color: #343959;
+  --primary-color: #737AA8;
+  --secondary-color: #f3961c;
+  --dark-orange: #ff9100;
+  --naranja-claro:#F8BB84;
+  --light-pink-color: #f4F4FF;
+  --medium-gray-color: #ccc;
+}
+
+* {
+    box-sizing: border-box; /* Incluye el borde y el padding en el tamaño total del elemento */
+    margin: 0;              /* Elimina márgenes por defecto del navegador */
+    padding: 0;             /* Elimina rellenos por defecto del navegador */
+    font-family: 'Poopins', sans-serif;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;    /* Fuente principal para todo el texto */
+    background-color: var(--light-pink-color); /* Aplica el azul al fondo */
+    display: flex;                         /* Activa el modo caja flexible */
+    justify-content: center;               /* Centra la tarjeta horizontalmente */
+    align-items: center;                   /* Centra la tarjeta verticalmente */
+    min-height: 100vh;                     /* Hace que el body mida al menos el alto de la pantalla */
+}
+
+/* Capa decorativa con puntos */
+.background-dots {
+    width: 100%;                           /* Ocupa todo el ancho */
+    min-height: 100vh;                     /* Ocupa todo el alto */
+    display: flex;                         /* Centra el contenido interior */
+    justify-content: center;
+    align-items: center;
+    /* Crea un efecto de puntos usando un gradiente circular pequeño que se repite */
+    background-image: radial-gradient(rgba(6, 5, 82, 0.2) 2px, transparent 2px);
+    background-size: 30px 30px;  
+    background-color: var(--light-pink-color);          /* Espaciado entre cada punto */
+}
+
+/* Contenedor principal */
+.container {
+  width: 100%; 
+  margin-top: 40px;
+  min-height: calc(100vh - 140px);
+  padding: 40px 20px;
+  text-align: center;
+}
+
+/* Título */
+.title {
+  color: var(--dark-color);
+  font-size: 1.8rem;
+  margin-bottom: 50px;
+  line-height: 1.4;
+  font-weight: bold;
+}
+
+.title span {
+  color: var(--dark-orange);
+  font-weight: 600;
+}
+
+/* Cards */
+.cards {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  flex-wrap: wrap;
+}
+
+.cards a{
+  text-decoration: none;
+  color: #fff;
+}
+
+/* Card general */
+.card {
+  width: 240px;
+  border-radius: 18px;
+  padding: 30px 20px;
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+}
+
+.card img {
+  width: 200px;
+  margin-bottom: 20px;
+}
+
+.card h2 {
+  margin-bottom: 15px;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.card p {
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.card .img-provider{
+  margin-bottom: 25px;
+  margin-top: 15px;
+  
+}
+
+/* Proveedor */
+.provider {
+  background: linear-gradient( 3deg, var(--dark-color) 0%, var(--primary-color) 100%);
+}
+
+/* Comprador */
+.buyer {
+  background: linear-gradient( 3deg, var(--secondary-color) 0%, var(--naranja-claro) 100%);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .cards {
+    gap: 30px;
+  }
+}
