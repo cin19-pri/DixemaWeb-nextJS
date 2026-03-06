@@ -1,0 +1,192 @@
+/* --- 1. VARIABLES GLOBALES --- */
+:root {
+    --color-fondo-externo: #737aa8;
+    --color-blanco-panel: #f4f4ff;
+    --color-naranja-sol: #f3961c;
+    --color-texto-titulo: #343959;
+    --color-texto-suave: #2f2f2f;
+    --color-bordes-input: #e8e8e8;
+}
+
+/* --- 2. CONTENEDOR DE FONDO (PUNTOS) --- */
+.background-dots {
+    width: 100%;
+    min-height: 100vh;
+    background-color: var(--color-fondo-externo);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    /* Efecto de puntos decorativos */
+    background-image: radial-gradient(rgba(255, 255, 255, 0.2) 2px, transparent 2px);
+    background-size: 30px 30px;
+}
+
+/* --- 3. TARJETA PRINCIPAL --- */
+.card {
+    position: relative;
+    background-color: var(--color-blanco-panel);
+    padding: 60px 40px 40px 40px;
+    border-radius: 25px; /* Bordes suaves estilo Dixema */
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+    animation: fadeIn 0.5s ease-out; /* Animación de entrada */
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- 4. BOTÓN REGRESAR --- */
+.btn-back {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: none;
+    color: var(--color-texto-titulo);
+    font-family: var(--font-poppins), sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.btn-back svg {
+    fill: currentColor;
+}
+
+.btn-back:hover {
+    color: var(--color-naranja-sol);
+}
+
+/* --- 5. ICONO SUPERIOR --- */
+.icon-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.icon-circle {
+    background-color: #e8e8ff;
+    color: var(--color-naranja-sol);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* --- 6. TEXTOS --- */
+.card h2 {
+    font-family: var(--font-balsamiq), cursive;
+    color: var(--color-texto-titulo);
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.card p {
+    color: var(--color-texto-suave);
+    font-size: 0.95rem;
+    margin-bottom: 30px;
+    line-height: 1.4;
+}
+
+/* --- 7. FORMULARIO E INPUTS --- */
+.input-group {
+    text-align: left;
+    margin-bottom: 25px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--color-texto-titulo);
+}
+
+.input-group input {
+    width: 100%;
+    padding: 14px 18px;
+    border: 1px solid var(--color-bordes-input);
+    border-radius: 12px;
+    font-family: var(--font-poppins), sans-serif;
+    outline: none;
+    transition: all 0.3s;
+}
+
+.input-group input:focus {
+    border-color: var(--color-naranja-sol);
+    box-shadow: 0 0 0 3px rgba(243, 150, 28, 0.1);
+}
+
+/* --- 8. BOTÓN DE ENVÍO --- */
+.btn-reset {
+    width: 100%;
+    padding: 15px;
+    background-color: var(--color-naranja-sol);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-reset:hover {
+    background-color: var(--color-fondo-externo);
+    transform: translateY(-2px);
+}
+
+.back-to-login {
+    display: inline-block;
+    margin-top: 25px;
+    color: var(--color-naranja-sol);
+    font-size: 14px;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.back-to-login:hover {
+    text-decoration: underline;
+    color: var(--color-texto-titulo);
+}
+
+/* --- 10. DISEÑO RESPONSIVO --- */
+
+/* Ajustes para Tablets */
+@media (max-width: 992px) {
+    .card {
+        max-width: 380px;
+        padding: 50px 30px 35px 30px;
+    }
+}
+
+/* Ajustes para Celulares */
+@media (max-width: 480px) {
+    .card {
+        border-radius: 25px;        /* Bordes más redondeados en móvil */
+        margin: 15px;
+        padding: 60px 20px 30px 20px;
+    }
+
+    h2 { font-size: 1.4rem; }      /* Título un poco más pequeño */
+
+    .btn-back {
+        top: 25px;
+        left: 20px;
+    }
+    
+    input {
+        font-size: 16px;            /* Tamaño de fuente 16px evita el zoom automático en iPhones */
+    }
+}
