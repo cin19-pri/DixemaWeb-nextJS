@@ -10,10 +10,10 @@
   /* Colors */
   --white-color: #fff;
   --dark-color: #343959;
-  --primary-color: #737AA8;
+  --primary-color: #737aa8;
   --secondary-color: #f3961c;
-  --naranja-claro:#F8BB84;
-  --light-pink-color: #f4F4FF;
+  --naranja-claro: #f8bb84;
+  --light-pink-color: #f4f4ff;
   --medium-gray-color: #ccc;
   /* Font size */
   --font-size-s: 0.9rem;
@@ -77,7 +77,12 @@ header {
   z-index: 5;
   width: 100%;
   position: fixed;
-  background: linear-gradient( 90deg, var(--dark-color) -40%, var(--primary-color) 51%, var(--light-pink-color) 150%);
+  background: linear-gradient(
+    90deg,
+    var(--dark-color) -40%,
+    var(--primary-color) 51%,
+    var(--light-pink-color) 150%
+  );
 }
 header .navbar {
   display: flex;
@@ -122,7 +127,12 @@ header .navbar {
 /* Hero section styling */
 .hero-section {
   min-height: 100vh;
-  background: linear-gradient( 90deg, var(--dark-color) -40%, var(--primary-color) 51%, var(--light-pink-color) 150%);
+  background: linear-gradient(
+    90deg,
+    var(--dark-color) -40%,
+    var(--primary-color) 51%,
+    var(--light-pink-color) 150%
+  );
 }
 .hero-section .section-content {
   display: flex;
@@ -238,7 +248,7 @@ header .navbar {
   color: var(--secondary-color);
 }
 /* filosofia section styling dixema */
-#skills .section-title{
+#skills .section-title {
   margin-bottom: -90px;
 }
 #skills i {
@@ -423,7 +433,7 @@ header .navbar {
   }
   body.show-mobile-menu header::before {
     content: "";
-    content: '';
+    content: "";
     position: fixed;
     top: 0;
     left: 0;
