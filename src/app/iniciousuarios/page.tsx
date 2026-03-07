@@ -7,19 +7,16 @@ import styles from "./iniciousuarios.module.css";
 import { useShop } from "../../context/ShopContext";
 import { useRouter } from "next/navigation";
 
-export default function iniciousuarios() {
+export default function Iniciousuarios() {
   const router = useRouter();
+  const { addToCart, addToFavorites, favorites } = useShop();
 
-  const { addToCart, checkout } = useShop();
-
-  // ESTADOS
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Todo");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [activeCardId, setActiveCardId] = useState(null);
+  const [activeCardId, setActiveCardId] = useState<number | null>(null);
   const [selectedProduct, setSelectedProduct] = useState(products[0]);
 
-  // FILTRO DE PRODUCTOS
   const filteredProducts = products.filter((prod) => {
     const matchesSearch = prod.title
       .toLowerCase()
@@ -31,7 +28,6 @@ export default function iniciousuarios() {
     return matchesSearch && matchesCategory;
   });
 
-  // CERRAR TARJETA AUTOMÁTICAMENTE
   useEffect(() => {
     if (activeCardId) {
       const timer = setTimeout(() => setActiveCardId(null), 4000);
@@ -41,7 +37,6 @@ export default function iniciousuarios() {
 
   return (
     <div className={styles.homeWrapper}>
-      {/* NAVBAR */}
       <Navbar onSearch={setSearchTerm} />
 
       {/* PUBLICIDAD */}
@@ -93,7 +88,6 @@ export default function iniciousuarios() {
             </div>
           ))}
 
-          {/* BOTON TODO */}
           <div
             className={styles.productCategory}
             onClick={() => router.push("/categorias")}
@@ -115,49 +109,64 @@ export default function iniciousuarios() {
         <span className={styles.sectionCategoryText}>Productos</span>
 
         <div className={styles.productsGrid}>
-          {filteredProducts.map((prod: any) => (
-            <div
-              key={prod.id}
-              className={`${styles.pCard} ${
-                activeCardId === prod.id ? styles.isOpen : ""
-              }`}
-              onClick={() => setActiveCardId(prod.id)}
-            >
-              <div className={styles.pCardImage}>
-                <img src={prod.img} alt={prod.title} />
-              </div>
+          {filteredProducts.map((prod: any) => {
+            const isFavorite = favorites.some(
+              (fav: any) => fav.id === prod.id
+            );
 
-              <div className={styles.pCardContent}>
-                <div className={styles.pCardTop}>
+            return (
+              <div
+                key={prod.id}
+                className={`${styles.pCard} ${
+                  activeCardId === prod.id ? styles.isOpen : ""
+                }`}
+                onClick={() => setActiveCardId(prod.id)}
+              >
+                <div className={styles.pCardImage}>
+                  <img src={prod.img} alt={prod.title} />
+                </div>
+
+                <div className={styles.pCardContent}>
                   <h3 className={styles.pCardTitle}>{prod.title}</h3>
-                </div>
 
-                <div className={styles.cardActions}>
-                  <button
-                    className={`${styles.btn} ${styles.details}`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setSelectedProduct(prod);
-                      setIsModalOpen(true);
-                    }}
-                  >
-                    Ver detalles
-                  </button>
-                </div>
+                  <div className={styles.cardActions}>
+                    <button
+                      className={`${styles.btn} ${styles.details}`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedProduct(prod);
+                        setIsModalOpen(true);
+                      }}
+                    >
+                      Ver detalles
+                    </button>
+                  </div>
 
-                <div className={styles.pCardFooter}>
-                  <span className={styles.pCardPrice}>{prod.price}</span>
-                  <div className={styles.pCardButton}>
-                    <i className="bx bx-heart"></i>
+                  <div className={styles.pCardFooter}>
+                    <span className={styles.pCardPrice}>{prod.price}</span>
+
+                    <div
+                      className={styles.pCardButton}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        addToFavorites(prod);
+                      }}
+                    >
+                      <i
+                        className={
+                          isFavorite ? "bx bxs-heart" : "bx bx-heart"
+                        }
+                      ></i>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </section>
 
-      {/* MODAL PRODUCTO */}
+      {/* MODAL */}
       {isModalOpen && selectedProduct && (
         <div
           className={`${styles.modalOverlay} ${styles.active}`}
@@ -174,23 +183,20 @@ export default function iniciousuarios() {
               &times;
             </button>
 
-            {/* GALERÍA */}
             <div className={styles.modalGallery}>
-              {selectedProduct.gallery.map((img, index) => (
+              {selectedProduct.gallery.map((img: string, index: number) => (
                 <img key={index} src={img} alt={selectedProduct.title} />
               ))}
             </div>
 
-            {/* INFO */}
             <div className={styles.modalInfo}>
               <span className={styles.available}>DISPONIBLE</span>
 
               <h2>{selectedProduct.title}</h2>
-
               <p>{selectedProduct.description}</p>
 
               <div>
-                {selectedProduct.specs.map((spec, index) => (
+                {selectedProduct.specs.map((spec: string, index: number) => (
                   <div key={index} className={styles.specPill}>
                     {spec}
                   </div>
@@ -210,7 +216,6 @@ export default function iniciousuarios() {
         </div>
       )}
 
-      {/* FOOTER */}
       <Footer />
     </div>
   );
