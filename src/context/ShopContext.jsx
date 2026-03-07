@@ -6,22 +6,45 @@ const ShopContext = createContext();
 export function ShopProvider({ children }) {
   const [cart, setCart] = useState([]);
   const [history, setHistory] = useState([]);
+  const [favorites, setFavorites] = useState([]);
 
-  // cargar historial guardado
+  // Cargar historial y favoritos al iniciar
   useEffect(() => {
     const savedHistory = localStorage.getItem("purchaseHistory");
+    const savedFavorites = localStorage.getItem("favorites");
+
     if (savedHistory) {
       setHistory(JSON.parse(savedHistory));
     }
+
+    if (savedFavorites) {
+      setFavorites(JSON.parse(savedFavorites));
+    }
   }, []);
 
-  // guardar historial
+  // Guardar historial
   useEffect(() => {
     localStorage.setItem("purchaseHistory", JSON.stringify(history));
   }, [history]);
 
+  // ⭐ Guardar favoritos
+  useEffect(() => {
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+  }, [favorites]);
+
   const addToCart = (product) => {
     setCart([...cart, product]);
+  };
+
+  // ⭐ AGREGAR / QUITAR FAVORITOS
+  const addToFavorites = (product) => {
+    const exists = favorites.find((p) => p.id === product.id);
+
+    if (exists) {
+      setFavorites(favorites.filter((p) => p.id !== product.id));
+    } else {
+      setFavorites([...favorites, product]);
+    }
   };
 
   const checkout = () => {
@@ -38,7 +61,16 @@ export function ShopProvider({ children }) {
   };
 
   return (
-    <ShopContext.Provider value={{ cart, addToCart, checkout, history }}>
+    <ShopContext.Provider
+      value={{
+        cart,
+        addToCart,
+        checkout,
+        history,
+        favorites,
+        addToFavorites,
+      }}
+    >
       {children}
     </ShopContext.Provider>
   );

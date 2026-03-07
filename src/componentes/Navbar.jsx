@@ -1,7 +1,13 @@
+"use client";
+
 import Link from "next/link";
+import { useShop } from "../context/ShopContext";
 import styles from "../app/iniciousuarios/iniciousuarios.module.css";
 
 export default function Navbar({ onSearch }) {
+
+  const { favorites } = useShop();
+
   return (
     <nav className={styles.nav}>
       {/* FILA SUPERIOR */}
@@ -16,7 +22,7 @@ export default function Navbar({ onSearch }) {
               className={styles.searchInput}
               type="text"
               placeholder="Buscar productos..."
-              onChange={(e) => onSearch(e.target.value)}
+              onChange={(e) => onSearch?.(e.target.value)}
             />
             <button type="button" className={styles.searchButton}>
               <i className="bx bx-search"></i>
@@ -25,12 +31,39 @@ export default function Navbar({ onSearch }) {
         </div>
 
         <div className={styles.navRight}>
-          <Link href="#favoritos" className={styles.navIcon}>
+          
+          {/* FAVORITOS */}
+          <Link href="/favoritos" className={styles.navIcon} style={{position:"relative"}}>
             <i className="bx bx-heart"></i> Favoritos
+
+            {favorites.length > 0 && (
+              <span
+                style={{
+                  position: "absolute",
+                  top: "-5px",
+                  right: "-10px",
+                  background: "red",
+                  color: "white",
+                  borderRadius: "50%",
+                  fontSize: "12px",
+                  width: "18px",
+                  height: "18px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                {favorites.length}
+              </span>
+            )}
           </Link>
+
+          {/* COMPRAS */}
           <Link href="/miscompras" className={styles.navIcon}>
             <i className="bx bx-cart"></i> Mis compras
           </Link>
+
+          {/* USUARIO */}
           <div className={styles.userInfo}>
             <img
               src="/img/avatar.png.png"
@@ -39,34 +72,39 @@ export default function Navbar({ onSearch }) {
             />
             <span className={styles.userName}>Manuel Mendoza</span>
           </div>
+
         </div>
       </div>
 
       {/* FILA INFERIOR */}
       <ul className={styles.navBottom}>
         <li>
-          <Link href="../../iniciousuarios" className={styles.navLink}>
+          <Link href="/iniciousuarios" className={styles.navLink}>
             <i className="bx bx-home"></i> Inicio
           </Link>
         </li>
+
         <li>
-          <Link href="@/app/perfilusuario" className={styles.navLink}>
+          <Link href="/perfilusuario" className={styles.navLink}>
             <i className="bx bx-user"></i> Perfil
           </Link>
         </li>
+
         <li>
-          <Link href="../app/notificaciones" className={styles.navLink}>
+          <Link href="/notificaciones" className={styles.navLink}>
             <i className="bx bx-bell"></i> Notificaciones
             <span className={styles.notificationBadge}>0</span>
           </Link>
         </li>
+
         <li>
           <Link href="/ayuda" className={styles.navLink}>
             <i className="bx bx-help-circle"></i> Ayuda
           </Link>
         </li>
+
         <li>
-          <Link href="../app/categorias" className={styles.navLink}>
+          <Link href="/categorias" className={styles.navLink}>
             <i className="bx bx-grid-alt"></i> Categorías
           </Link>
         </li>
