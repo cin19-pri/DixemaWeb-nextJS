@@ -63,8 +63,6 @@ export default function RootLayout({
       </head>
 
       <body>
-        <ShopProvider>
-          <main>
             {children}
 
             {/* Scripts de terceros */}
@@ -76,8 +74,6 @@ export default function RootLayout({
               src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
               strategy="afterInteractive"
             />
-          </main>
-        </ShopProvider>
       </body>
     </html>
   );
