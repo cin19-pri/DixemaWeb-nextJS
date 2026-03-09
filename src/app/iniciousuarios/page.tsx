@@ -4,13 +4,10 @@ import Navbar from "../../componentes/Navbar";
 import Footer from "../../componentes/Footer";
 import { products, categories } from "../../datac/products";
 import styles from "./iniciousuarios.module.css";
-import { useShop } from "../../context/ShopContext";
 import { useRouter } from "next/navigation";
 
 export default function iniciousuarios() {
   const router = useRouter();
-
-  const { addToCart, checkout } = useShop();
 
   // ESTADOS
   const [searchTerm, setSearchTerm] = useState("");
@@ -199,10 +196,7 @@ export default function iniciousuarios() {
 
               <h3>{selectedProduct.price}</h3>
 
-              <button
-                className={`${styles.btnp} ${styles.detailsp}`}
-                onClick={() => addToCart(selectedProduct)}
-              >
+              <button className={`${styles.btnp} ${styles.detailsp}`}>
                 Comprar
               </button>
             </div>
