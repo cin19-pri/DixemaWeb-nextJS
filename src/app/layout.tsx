@@ -63,17 +63,19 @@ export default function RootLayout({
       </head>
 
       <body>
-        {children}
+        <ShopProvider>
+          {children}
 
-        {/* Scripts de terceros */}
-        <Script
-          src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"
-          strategy="afterInteractive"
-        />
-        <Script
-          src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
-          strategy="afterInteractive"
-        />
+          {/* Scripts de terceros */}
+          <Script
+            src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"
+            strategy="afterInteractive"
+          />
+          <Script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+            strategy="afterInteractive"
+          />
+        </ShopProvider>
       </body>
     </html>
   );
