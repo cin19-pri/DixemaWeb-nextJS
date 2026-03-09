@@ -2,15 +2,14 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../../componentes/Navbar";
 import Footer from "../../componentes/Footer";
+import { useShop } from "../../context/ShopContext";
 import { products, categories } from "../../datac/products";
 import styles from "./iniciousuarios.module.css";
-import { useShop } from "../../context/ShopContext";
 import { useRouter } from "next/navigation";
 
 export default function Iniciousuarios() {
   const router = useRouter();
   const { addToCart, addToFavorites, favorites } = useShop();
-
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Todo");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -110,9 +109,7 @@ export default function Iniciousuarios() {
 
         <div className={styles.productsGrid}>
           {filteredProducts.map((prod: any) => {
-            const isFavorite = favorites.some(
-              (fav: any) => fav.id === prod.id
-            );
+            const isFavorite = favorites.some((fav: any) => fav.id === prod.id);
 
             return (
               <div
@@ -153,9 +150,7 @@ export default function Iniciousuarios() {
                       }}
                     >
                       <i
-                        className={
-                          isFavorite ? "bx bxs-heart" : "bx bx-heart"
-                        }
+                        className={isFavorite ? "bx bxs-heart" : "bx bx-heart"}
                       ></i>
                     </div>
                   </div>
@@ -205,10 +200,7 @@ export default function Iniciousuarios() {
 
               <h3>{selectedProduct.price}</h3>
 
-              <button
-                className={`${styles.btnp} ${styles.detailsp}`}
-                onClick={() => addToCart(selectedProduct)}
-              >
+              <button className={`${styles.btnp} ${styles.detailsp}`}>
                 Comprar
               </button>
             </div>
