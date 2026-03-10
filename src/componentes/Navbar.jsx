@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import { handleLogout } from "../app/actions";
+import Image from "next/image";
 import { useShop } from "../context/ShopContext";
 import styles from "../app/iniciousuarios/iniciousuarios.module.css";
 
 export default function Navbar({ onSearch }) {
-
   const { favorites } = useShop();
 
   return (
@@ -13,7 +14,16 @@ export default function Navbar({ onSearch }) {
       {/* FILA SUPERIOR */}
       <div className={styles.navTop}>
         <div className={styles.navLeft}>
-          <img src="/img/image 52.png" alt="logo" height="70" />
+          <Link href="#" className={styles.navlogo}>
+            <Image
+              src="/images/logo-dixema.png"
+              alt="logo"
+              className={styles.navimage}
+              width={100}
+              height={100}
+            />
+            <h2 className={styles.logotext}>DIXEMA</h2>
+          </Link>
         </div>
 
         <div className={styles.navCenter}>
@@ -31,11 +41,13 @@ export default function Navbar({ onSearch }) {
         </div>
 
         <div className={styles.navRight}>
-          
           {/* FAVORITOS */}
-          <Link href="/favoritos" className={styles.navIcon} style={{position:"relative"}}>
+          <Link
+            href="/favoritos"
+            className={styles.navIcon}
+            style={{ position: "relative" }}
+          >
             <i className="bx bx-heart"></i> Favoritos
-
             {favorites.length > 0 && (
               <span
                 style={{
@@ -65,14 +77,18 @@ export default function Navbar({ onSearch }) {
 
           {/* USUARIO */}
           <div className={styles.userInfo}>
-            <img
-              src="/img/avatar.png.png"
-              alt="user"
-              className={styles.userAvatar}
-            />
-            <span className={styles.userName}>Manuel Mendoza</span>
+            <div className={styles.userGroup}>
+              <img
+                src="/img/avatar.png.png"
+                alt="user"
+                className={styles.userAvatar}
+              />
+              <span className={styles.userName}>Manuel Mendoza</span>
+            </div>
+            <button onClick={() => handleLogout()} className={styles.btnlogout}>
+              Cerrar Sesión
+            </button>
           </div>
-
         </div>
       </div>
 
