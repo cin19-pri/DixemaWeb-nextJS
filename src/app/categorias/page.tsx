@@ -10,6 +10,20 @@ export default function Categorias() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeCardId, setActiveCardId] = useState(null);
   const [selectedProduct, setSelectedProduct] = useState(products[0]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const nextImage = () => {
+    if (selectedProduct.gallery) {
+      setCurrentIndex((prev) => (prev + 1) % selectedProduct.gallery.length);
+    }
+  };
+
+  const prevImage = () => {
+    if (selectedProduct.gallery) {
+      setCurrentIndex((prev) =>
+        prev === 0 ? selectedProduct.gallery.length - 1 : prev - 1,
+      );
+    }
+  };
 
   const filteredProducts = products.filter((prod) => {
     const matchesSearch = prod.title
@@ -137,9 +151,24 @@ export default function Categorias() {
 
             {/* GALERÍA */}
             <div className={styles.modalGallery}>
-              {selectedProduct.gallery.map((img, index) => (
-                <img key={index} src={img} alt={selectedProduct.title} />
-              ))}
+              {/* Flechas de navegación */}
+              <button className={styles.arrowLeft} onClick={prevImage}>
+                &#10094;
+              </button>
+              <button className={styles.arrowRight} onClick={nextImage}>
+                &#10095;
+              </button>
+
+              <div
+                className={styles.imageSlider}
+                style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+              >
+                {selectedProduct.gallery.map((img, index) => (
+                  <div className={styles.slide} key={index}>
+                    <img src={img} alt={`${selectedProduct.title} ${index}`} />
+                  </div>
+                ))}
+              </div>
             </div>
 
             {/* INFO */}
@@ -160,7 +189,7 @@ export default function Categorias() {
 
               <h3>{selectedProduct.price}</h3>
 
-              <button className={`${styles.btn} ${styles.details}`}>
+              <button className={`${styles.btnp} ${styles.detailsp}`}>
                 Comprar
               </button>
             </div>

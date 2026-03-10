@@ -84,13 +84,11 @@ export default function LoginPage() {
                 Olvidé mi contraseña
               </Link>
             </div>
-            <Link href="/iniciousuarios">
-              <button type="submit" className="btn-submit">
-                Iniciar
-                <div className="arrow-wrapper">
-                  <div className="arrow"></div>
-                </div>
-              </button>
+            <Link href="/iniciousuarios" type="submit" className="btn-submit">
+              Iniciar
+              <div className="arrow-wrapper">
+                <div className="arrow"></div>
+              </div>
             </Link>
           </form>
 
