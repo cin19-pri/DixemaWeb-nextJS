@@ -42,6 +42,7 @@ body {
   width: 100px;
   display: flex;
   align-items: center;
+  padding-left: 20px;
   text-decoration: none;
 }
 .searchContainer {
@@ -128,10 +129,10 @@ body {
 }
 
 .btnlogout:hover {
-  background-color: #e74c3c;
+  background-color: #f3961c;
   color: white;
   transform: translateY(-2px);
-  box-shadow: 0 4px 0 #c0392b;
+  box-shadow: 0 4px 0 #ff9100;
 }
 
 .btnlogout:active {
