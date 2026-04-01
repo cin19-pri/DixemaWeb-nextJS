@@ -1,0 +1,123 @@
+main {
+  margin: 0;
+  font-family: 'Poopins', sans-serif;
+  background: #eeeef7;
+}
+
+/* Contenedor principal */
+.profile-container {
+  max-width: 900px;
+  margin: auto;
+  padding: 40px 20px;
+  
+}
+
+/* Header */
+.profile-header {
+  position: relative;
+  background: white;
+  padding: 40px 0 80px 0;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  text-align: center;
+}
+
+/* Botón regresar */
+.back-btn {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  border: none;
+  background: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* Logo derecha */
+.logo-small {
+  position: absolute;
+  right: 20px;
+  top: 0px;
+  font-weight: bold;
+  color: #ff7a00;
+}
+
+/* Avatar */
+.profile-avatar {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -60px;
+  background: white;
+  padding: 10px;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Nombre empresa */
+.company-name {
+  text-align: center;
+  margin-top: 80px;
+  color: #4b4f6a;
+}
+
+/* Secciones */
+.profile-section {
+  margin-top: 40px;
+}
+
+.profile-section h3 {
+  color: #6b6f85;
+  margin-bottom: 15px;
+}
+
+/* Tarjetas */
+.card {
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  overflow: hidden;
+}
+
+/* Items */
+.item {
+  display: flex;
+  justify-content: space-between;
+  padding: 18px 20px ;
+  border-bottom: 1px solid #c5c5c5;
+  cursor: pointer;
+}
+
+.item .text{
+    padding-left: 20px;
+}
+
+.item:last-child {
+  border-bottom: none;
+}
+
+.item:hover {
+  background: #fafafa;
+}
+
+/* ------------------ RESPONSIVE ------------------ */
+
+@media (max-width: 768px) {
+
+  .profile-container {
+    padding: 20px 10px;
+  }
+
+  .profile-header {
+    padding: 30px 0 70px 0;
+  }
+
+  .profile-avatar {
+    bottom: -55px;
+  }
+
+  .company-name {
+    font-size: 18px;
+  }
+
+}

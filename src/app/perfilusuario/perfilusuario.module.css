@@ -1,0 +1,233 @@
+.profileContainer {
+  padding: 1px;
+  background-color: #eeeef7;
+  min-height: 100vh;
+}
+
+.profileBar {
+  background: #fbfaff;
+  margin: 15px;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+  position: relative;
+}
+
+.profileSection {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.profileAvatar img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 4px solid white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.profileName {
+  font-size: 22px;
+  font-weight: bold;
+  margin-top: 15px;
+}
+
+.backIcon {
+  position: absolute;
+  margin-top: -10px;
+  left: 20px;
+  font-size: 23px;
+  color: #554d9b;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.backIcon:hover {
+  color: #e67e22;
+}
+
+.settingsIcon {
+  position: absolute;
+  margin-top: -10px;
+  right: 20px;
+  font-size: 23px;
+  color: #554d9b;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.settingsIcon:hover {
+  color: #e67e22;
+}
+
+.back-icon {
+  left: 20px;
+}
+
+.settings-icon {
+  right: 20px;
+}
+
+/* ===== SECCIÓN PERFIL ===== */
+
+.profileSection {
+  background: #fbfaff;
+  margin: 15px;
+  border-radius: 20px;
+  text-align: center;
+  padding: 70px 20px 30px;
+  position: relative;
+}
+
+.profileAvatar {
+  width: 110px;
+  height: 110px;
+  background: #a2d2d2;
+  border-radius: 50%;
+  border: 6px solid #f4f4f4;
+  overflow: hidden;
+  position: absolute;
+  top: -55px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.profileAvatar img {
+  width: 80%;
+}
+
+.profileName {
+  margin-top: 40px;
+  color: #554d9b;
+  font-weight: 600;
+}
+
+/* ===== ICONOS ===== */
+
+.profileActions {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 25px;
+}
+
+.actionItem {
+  text-align: center;
+  color: #777;
+  cursor: pointer;
+}
+
+.actionItem i {
+  font-size: 28px;
+  color: #554d9b;
+  display: block;
+  margin-bottom: 6px;
+  transition: 0.3s;
+}
+
+.linkProfile{
+  text-decoration: none;
+}
+
+
+.actionItem:hover i {
+  color: #e67e22;
+}
+
+/* ================= PEDIDOS ================= */
+
+.ordersCard {
+  background: #fbfaff;
+  margin: 20px;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+.orderItem {
+  display: flex;
+  gap: 15px;
+  padding: 12px 0;
+  border-bottom: 1px solid #bbb9b9;
+}
+
+.orderItem:last-child {
+  border-bottom: none;
+}
+
+.status {
+  font-size: 0.8rem;
+  margin-top: 4px;
+}
+
+/* ================= RECOMENDADOS ================= */
+
+.section-label {
+  margin-top: 25px;
+  color: #f5f5f5;
+  font-weight: 600;
+}
+
+.product-card {
+  background: rgb(246, 233, 233);
+  border: 2px solid #e67e22;
+  border-radius: 15px;
+  margin: 15px;
+  padding: 15px;
+  display: flex;
+  gap: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.product-card img {
+  width: 100px;
+  border-radius: 10px;
+}
+
+.product-details h4 {
+  margin: 0;
+  color: #2c3e50;
+}
+
+.product-details p {
+  font-size: 0.8rem;
+  color: #777;
+}
+
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.price {
+  color: #554d9b;
+  font-weight: 600;
+}
+
+.moq {
+  color: #e74c3c;
+  font-size: 0.8rem;
+}
+
+.add-btn {
+  background: #e67e22;
+  color: white;
+  border: none;
+  padding: 6px 18px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.add-btn:hover {
+  background: #cf711f;
+}
+
+/* ===== link a configuracion /profile ===== */
+div .link-profile{
+  text-decoration: none;
+}
