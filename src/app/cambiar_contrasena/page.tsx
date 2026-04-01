@@ -12,17 +12,41 @@ declare global {
 }
 
 export default function CambiarContrasena() {
-  const router = useRouter(); // Hook para manejar la navegación
+  const router = useRouter();
   const pathname = usePathname();
 
-  // Función para manejar el envío del formulario
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault(); // Evita que la página se recargue
+    e.preventDefault();
     
-    // Aquí puedes añadir validaciones adicionales antes de navegar
-    
-    // Redirección a la carpeta bienvenida
-    router.push("/bienvenida"); 
+    // Obtener los elementos del DOM
+    const passwordInput = document.getElementById("password") as HTMLInputElement;
+    const confirmInput = document.getElementById("confirm-password") as HTMLInputElement;
+    const errorAlert = document.getElementById("errorAlert");
+
+    const password = passwordInput.value;
+    const confirmPassword = confirmInput.value;
+
+    // --- Lógica de Validación ---
+    const hasMinLength = password.length >= 8;
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasNumberOrSymbol = /[0-9!@#$%^&*(),.?":{}|<>]/.test(password);
+    const passwordsMatch = password === confirmPassword;
+
+    if (hasMinLength && hasUpperCase && hasNumberOrSymbol && passwordsMatch) {
+      // Si todo es correcto, ocultamos error y redirigimos
+      if (errorAlert) errorAlert.style.display = "none";
+      console.log("Contraseña válida, redirigiendo...");
+      router.push("bienvenida"); 
+    } else {
+      // Si falla algo, mostramos la alerta y NO redirigimos
+      if (errorAlert) {
+        errorAlert.style.display = "flex";
+        // Opcional: ocultar la alerta automáticamente después de 3 segundos
+        setTimeout(() => {
+          errorAlert.style.display = "none";
+        }, 3000);
+      }
+    }
   };
 
   useEffect(() => {
@@ -62,7 +86,6 @@ export default function CambiarContrasena() {
         <h2>Ingresa una nueva contraseña</h2>
         <p>de al menos 8 caracteres</p>
 
-        {/* Agregamos el evento onSubmit al formulario */}
         <form id="passwordForm" onSubmit={handleSubmit}>
           <div className="input-group">
             <label htmlFor="password">Nueva contraseña</label>
@@ -118,7 +141,7 @@ export default function CambiarContrasena() {
             <path d="m13 14h-2v-5h2zm0 4h-2v-2h2zm-12 3h22l-11-19z" fill="#ce3838"></path>
           </svg>
         </div>
-        <div className="warning__title">revisa tu contraseña</div>
+        <div className="warning__title">Revisa que las contraseñas coincidan y cumplan los requisitos</div>
       </div>
     </div>
   );

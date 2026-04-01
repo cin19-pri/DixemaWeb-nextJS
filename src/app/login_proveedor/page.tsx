@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react"; 
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation"; 
 import "./login_proveedor.css"; 
 import Link from "next/link";
 import Script from "next/script";
@@ -14,9 +14,9 @@ declare global {
 
 export default function LoginProveedor() {
   const pathname = usePathname();
+  const router = useRouter(); 
 
   useEffect(() => {
-    // Usamos un timer de 100ms para asegurar que el DOM cargue antes de activar el ojo
     const timer = setTimeout(() => {
       if (window.iniciarLogicaPassword) {
         window.iniciarLogicaPassword();
@@ -26,8 +26,14 @@ export default function LoginProveedor() {
     return () => clearTimeout(timer);
   }, [pathname]); 
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault(); 
+    
+    // Al renombrar el archivo a page.tsx, esta ruta ya no dará 404
+    router.push("/gestion_producto"); 
+  };
+
   return (
-    /* La 'key' basada en pathname es lo que evita que las letras desaparezcan */
     <div className="main-wrapper-login" key={pathname}>
       <Script 
         src="/scripts/login.js" 
@@ -40,7 +46,7 @@ export default function LoginProveedor() {
           <h1>Bienvenidos<br /> <span>Nuevamente</span></h1>
           <p className="subtitle">Coloca los datos correspondientes</p>
 
-          <form action="#">
+          <form onSubmit={handleSubmit}>
             <div className="input-group">
               <input type="email" placeholder="Email" required />
             </div>
@@ -54,7 +60,6 @@ export default function LoginProveedor() {
               <label>
                 <input type="checkbox" /> Recordar contraseña
               </label>
-              {/* CAMBIO CLAVE: Usamos 'n' en lugar de 'ñ' para evitar el 404 */}
               <Link href="/olvide_contrasena" className="forgot-link">
                 Olvidé mi contraseña
               </Link>

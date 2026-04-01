@@ -1,0 +1,291 @@
+/* --- 1. VARIABLES GLOBALES --- */
+:root {
+    --color-sidebar: #737aa8; 
+    --color-fondo-main: #F4F4FF;
+    --color-blanco: #FFFFFF;
+    --color-naranja-primario: #f3961c; 
+    --color-naranja-hover: #737aa8;      /* Color para el hover */
+    --color-texto-oscuro: #343959;
+    --color-texto-suave: #8E8E93;
+    --color-borde: #E5E5EA;
+    --color-rojo-agotado: #df1818; 
+    --color-verde-disponible: #82c252; 
+}
+
+/* --- 2. LAYOUT PRINCIPAL (PC: 3 Columnas) --- */
+.dashboard-wrapper {
+    display: grid;
+    grid-template-columns: 260px 1fr 320px; 
+    min-height: 100vh;
+    background-color: var(--color-fondo-main);
+    font-family: 'Poppins', sans-serif;
+    color: var(--color-texto-oscuro);
+}
+
+/* --- 3. SIDEBAR (DIXEMA) --- */
+.sidebar {
+    background-color: var(--color-sidebar);
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    color: var(--color-blanco);
+    transition: all 0.3s ease;
+    z-index: 1002;
+}
+
+.logo-section {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 50px;
+    padding-left: 15px;
+}
+
+.nav-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex-grow: 1;
+}
+
+.nav-item {
+    color: var(--color-blanco);
+    text-decoration: none;
+    padding: 14px 18px;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.nav-item.active, .nav-item:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* --- 4. CONTENIDO PRINCIPAL (CENTRADO EN PC) --- */
+.main-content {
+    padding: 40px;
+    width: 100%;
+    max-width: 1100px; 
+    margin: 0 auto;    
+}
+
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    background: transparent; 
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 15px 0;
+    transition: all 0.4s ease;
+}
+
+/* Elementos que reaccionan al scroll */
+.welcome-msg, .header-tools, .hamburger-btn {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 1;
+}
+
+.fade-out {
+    opacity: 0 !important;
+    transform: translateY(-15px) !important;
+    pointer-events: none;
+    visibility: hidden;
+    height: 0;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden;
+}
+
+.header-left-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.hamburger-btn {
+    display: none; 
+    background: var(--color-sidebar);
+    color: white;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 1.4rem;
+    cursor: pointer;
+}
+
+.welcome-msg h1 { font-size: 2.5rem; font-weight: 700; margin: 0; }
+.welcome-msg h1 span { color: var(--color-naranja-primario); font-family: 'Balsamiq Sans', cursive; }
+
+.search-bar input {
+    padding: 12px 30px;
+    border-radius: 50px; 
+    border: 2px solid var(--color-naranja-primario);
+    background-color: var(--color-blanco);
+    width: 300px;
+    outline: none;
+}
+
+/* --- 5. ACCIONES --- */
+.action-bar-text {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    margin-bottom: 25px;
+}
+
+.btn-primary {
+    background-color: var(--color-naranja-primario);
+    color: var(--color-blanco);
+    border: none;
+    padding: 10px 22px;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease; /* Transición para que el hover sea suave */
+}
+
+/* EFECTO HOVER PARA AÑADIR PRODUCTO */
+.btn-primary:hover { 
+    background-color: var(--color-naranja-hover); 
+    transform: translateY(-3px); 
+    box-shadow: 0 5px 15px rgba(243, 150, 28, 0.3); /* Sombra naranja suave */
+}
+
+.btn-primary:active {
+    transform: translateY(-1px); /* Efecto de hundimiento al clickear */
+}
+
+/* --- 6. GRID DE PRODUCTOS --- */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.product-card {
+    background: var(--color-blanco);
+    padding: 20px;
+    border-radius: 15px; 
+    border: 1px solid var(--color-borde);
+}
+
+.product-image {
+    height: 220px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+    background-color: var(--color-fondo-main);
+}
+
+/* --- 7. PANEL DERECHO --- */
+.right-panel { 
+    padding: 40px 20px; 
+    background-color: transparent;
+}
+
+.user-profile-mini {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; 
+    flex-direction: row-reverse; 
+    gap: 15px;
+    margin-bottom: 45px;
+}
+
+.profile-avatar {
+    width: 55px; height: 55px;
+    border-radius: 50%;
+    border: 2px solid var(--color-naranja-primario);
+    background-image: url('/images/perfil.jpg'); 
+    background-size: cover;
+    background-position: center;
+}
+
+/* --- 8. BOTONES Y STATUS --- */
+.status-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.status-badge {
+    padding: 6px 16px; border-radius: 10px;
+    font-size: 0.8rem; font-weight: 700; color: var(--color-blanco);
+}
+.status-badge.agotado { background-color: var(--color-rojo-agotado); }
+.status-badge.disponible { background-color: var(--color-verde-disponible); }
+
+.action-buttons-group {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+}
+
+.btn-edit-inline {
+    background-color: var(--color-fondo-main);
+    border: 1px solid var(--color-sidebar);
+    color: var(--color-sidebar);
+    padding: 6px 14px; 
+    border-radius: 10px;
+    font-weight: 700; 
+    cursor: pointer; 
+    transition: 0.2s;
+    margin-left: 12px;
+}
+.btn-edit-inline:hover { background-color: var(--color-sidebar); color: white; }
+
+/* --- 9. CALENDARIO --- */
+.calendar-widget {
+    background-color: var(--color-blanco); 
+    padding: 20px;
+    border-radius: 20px; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.calendar-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.calendar-header button { background: none; border: none; color: var(--color-naranja-primario); cursor: pointer; }
+.calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; text-align: center; }
+.day-number.today { background-color: var(--color-naranja-primario); color: white; border-radius: 8px; }
+
+/* --- 10. DISEÑO RESPONSIVO --- */
+.menu-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.4);
+    z-index: 1001;
+}
+
+@media (max-width: 1100px) {
+    .dashboard-wrapper { grid-template-columns: 80px 1fr; }
+    .right-panel { display: none; }
+    .logo-section { font-size: 0; padding-left: 0; text-align: center; }
+    .main-content { max-width: 100%; } 
+}
+
+@media (max-width: 992px) {
+    .dashboard-wrapper { grid-template-columns: 1fr; }
+    .hamburger-btn { display: block; }
+    .sidebar {
+        position: fixed;
+        left: -260px;
+        top: 0;
+        width: 260px;
+        height: 100vh;
+    }
+    .sidebar.open { left: 0; }
+}
+
+@media (max-width: 480px) {
+    .main-content { padding: 20px; }
+    .content-header { 
+        flex-direction: row; 
+        justify-content: space-between;
+        gap: 10px;
+    }
+    .search-bar input { width: 140px; }
+    .welcome-msg h1 { font-size: 1.4rem; }
+}
