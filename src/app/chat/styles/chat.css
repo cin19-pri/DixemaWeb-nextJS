@@ -1,0 +1,249 @@
+:root {
+  --primary: #f97316;
+  --primary-dark: #ea580c;
+  --primary-light: #fb923c;
+  --bg-soft: #f8fafc;
+  --bg-chat: #ffffff;
+  --text-dark: #1f2937;
+  --text-light: #6b7280;
+}
+
+/* ============================= */
+/* BOTÓN FLOTANTE */
+/* ============================= */
+.chat-widget-btn,
+.chat-bubble {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  border-radius: 50%;
+  color: white;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 20px 45px rgba(249,115,22,0.35);
+  z-index: 99999;
+  transition: all 0.3s ease;
+}
+
+.chat-widget-btn:hover,
+.chat-bubble:hover {
+  transform: scale(1.1);
+  box-shadow: 0 25px 60px rgba(249,115,22,0.5);
+}
+
+/* ============================= */
+/* VENTANA CHAT (COMPACTA PRO) */
+/* ============================= */
+.chat-window {
+  position: fixed;
+  bottom: 100px;
+  right: 24px;
+  width: 340px;
+  height: 480px;
+  background: var(--bg-chat);
+  border-radius: 22px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 
+    0 30px 80px rgba(0,0,0,0.15),
+    0 5px 15px rgba(0,0,0,0.08);
+  z-index: 99999;
+  animation: fadeInUp 0.25s ease;
+  backdrop-filter: blur(12px);
+}
+
+/* ============================= */
+/* HEADER (SaaS PRO) */
+/* ============================= */
+.chat-header {
+  background: linear-gradient(135deg, #6C4CF1, #8A6EFF);
+  color: white;
+  padding: 14px 16px;
+  font-weight: 600;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.chat-header::before {
+  content: "🤖";
+  width: 34px;
+  height: 34px;
+  background: white;
+  color: #6C4CF1;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ============================= */
+/* BODY */
+/* ============================= */
+.chat-body {
+  flex: 1;
+  padding: 14px;
+  overflow-y: auto;
+  background: var(--bg-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.chat-body::-webkit-scrollbar {
+  width: 5px;
+}
+.chat-body::-webkit-scrollbar-thumb {
+  background: #e5e7eb;
+  border-radius: 10px;
+}
+
+/* ============================= */
+/* MENSAJES */
+/* ============================= */
+.message {
+  max-width: 75%;
+  padding: 10px 14px;
+  border-radius: 16px;
+  font-size: 13px;
+  line-height: 1.4;
+  animation: fadeMessage 0.2s ease;
+  transition: 0.2s;
+}
+
+/* BOT */
+.message.bot {
+  background: #f1f2ff;
+  color: var(--text-dark);
+  align-self: flex-start;
+  border-bottom-left-radius: 6px;
+  border: 1px solid #e5e7ff;
+}
+
+/* USER */
+.message.user {
+  background: linear-gradient(135deg, #6C4CF1, #8A6EFF);
+  color: white;
+  align-self: flex-end;
+  border-bottom-right-radius: 6px;
+}
+
+/* Hover */
+.message:hover {
+  transform: scale(1.02);
+}
+
+/* ============================= */
+/* QUICK ACTIONS (BOTONES PRO) */
+/* ============================= */
+.chat-actions {
+  display: flex;
+  gap: 6px;
+  padding: 8px 10px;
+  background: white;
+  overflow-x: auto;
+}
+
+.chat-actions button {
+  border: none;
+  background: #f3f4ff;
+  color: #6C4CF1;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+/* Hover PRO */
+.chat-actions button:hover {
+  background: linear-gradient(135deg, #6C4CF1, #8A6EFF);
+  color: white;
+  transform: translateY(-1px);
+}
+
+.chat-actions::-webkit-scrollbar {
+  display: none;
+}
+
+/* ============================= */
+/* INPUT */
+/* ============================= */
+.chat-input {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  border-top: 1px solid #f1f5f9;
+  background: white;
+  box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 10px 14px;
+  border: none;
+  outline: none;
+  font-size: 13px;
+  border-radius: 20px;
+  background: #f1f5f9;
+}
+
+.chat-input input:focus {
+  background: #e2e8f0;
+}
+
+/* BOTÓN ENVIAR */
+.chat-input button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: white;
+  cursor: pointer;
+  transition: 0.25s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-input button:hover {
+  transform: scale(1.08);
+  box-shadow: 0 10px 25px rgba(249,115,22,0.4);
+}
+
+/* ============================= */
+/* ANIMACIONES */
+/* ============================= */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes fadeMessage {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
