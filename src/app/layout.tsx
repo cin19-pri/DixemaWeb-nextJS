@@ -1,35 +1,40 @@
-import type { Metadata } from 'next';
-import { Poppins, Balsamiq_Sans } from 'next/font/google';
-import './globals.css';
-import Script from 'next/script';
+import type { Metadata } from "next";
+import { Poppins, Balsamiq_Sans } from "next/font/google";
+import { ShopProvider } from "../../src/context/ShopContext";
+import "./globals.css";
+import Script from "next/script";
 
 // Configuración de Poppins para el cuerpo del texto
-const poppins = Poppins({ 
-  subsets: ['latin'], 
-  weight: ['300', '400', '600'],
-  variable: '--font-poppins' // Variable para usar en CSS
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["300", "400", "600"],
+  variable: "--font-poppins", // Variable para usar en CSS
 });
 
 // Configuración de Balsamiq Sans para los títulos
-const balsamiq = Balsamiq_Sans({ 
-  subsets: ['latin'], 
-  weight: ['400', '700'],
-  variable: '--font-balsamiq' // Variable para usar en CSS
+const balsamiq = Balsamiq_Sans({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-balsamiq", // Variable para usar en CSS
 });
 
 export const metadata: Metadata = {
-  title: 'DIXEMA',
-  description: 'Plataforma mayorista B2B',
+  title: "DIXEMA",
+  description: "Plataforma mayorista B2B",
 };
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="es" className={`${poppins.variable} ${balsamiq.variable}`}>
       <head>
+        <link
+          href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+          rel="stylesheet"
+        />
         {/* Favicon */}
         <link
           rel="icon"
@@ -58,17 +63,19 @@ export default function RootLayout({
       </head>
 
       <body>
-        {children}
+        <ShopProvider>
+          {children}
 
-        {/* Scripts de terceros */}
-        <Script 
-          src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" 
-          strategy="afterInteractive" 
-        />
-        <Script 
-          src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" 
-          strategy="afterInteractive" 
-        />
+          {/* Scripts de terceros */}
+          <Script
+            src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"
+            strategy="afterInteractive"
+          />
+          <Script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+            strategy="afterInteractive"
+          />
+        </ShopProvider>
       </body>
     </html>
   );

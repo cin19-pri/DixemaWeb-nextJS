@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect } from "react"; 
+import { useEffect } from "react";
 import { usePathname } from "next/navigation"; // Importamos usePathname para la estabilidad visual
-import "./login_usuario.css"; 
+import "./login_usuario.css";
 import Link from "next/link";
 import Script from "next/script";
 import Image from "next/image";
@@ -23,16 +23,16 @@ export default function LoginPage() {
         window.iniciarLogicaPassword();
       }
     }, 100);
-    
+
     return () => clearTimeout(timer);
-  }, [pathname]); 
+  }, [pathname]);
 
   return (
     /* Agregamos la key basada en pathname para forzar el repintado de los títulos */
     <div className="main-wrapper-login" key={pathname}>
-      <Script 
-        src="/scripts/login.js" 
-        strategy="afterInteractive" 
+      <Script
+        src="/scripts/login.js"
+        strategy="afterInteractive"
         onLoad={() => {
           if (window.iniciarLogicaPassword) {
             window.iniciarLogicaPassword();
@@ -42,13 +42,16 @@ export default function LoginPage() {
 
       <div className="main-container">
         <div className="form-section">
-          <h1>Bienvenidos<br /> <span>Nuevamente</span></h1>
+          <h1>
+            Bienvenidos
+            <br /> <span>Nuevamente</span>
+          </h1>
           <p className="subtitle">Coloca los datos correspondientes</p>
 
           <button type="button" className="google-login-btn">
-            <Image 
-              src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" 
-              alt="Google Logo" 
+            <Image
+              src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+              alt="Google Logo"
               width={18}
               height={18}
             />
@@ -61,9 +64,14 @@ export default function LoginPage() {
             <div className="input-group">
               <input type="email" placeholder="Email" required />
             </div>
-            
+
             <div className="input-group password-wrapper">
-              <input type="password" id="password" placeholder="Password" required />
+              <input
+                type="password"
+                id="password"
+                placeholder="Password"
+                required
+              />
               <i className="fa-solid fa-eye" id="togglePassword"></i>
             </div>
 
@@ -76,13 +84,14 @@ export default function LoginPage() {
                 Olvidé mi contraseña
               </Link>
             </div>
-
-            <button type="submit" className="btn-submit">
-              Iniciar 
-              <div className="arrow-wrapper">
-                <div className="arrow"></div>
-              </div>
-            </button>
+            <Link href="/iniciousuarios">
+              <button type="submit" className="btn-submit">
+                Iniciar
+                <div className="arrow-wrapper">
+                  <div className="arrow"></div>
+                </div>
+              </button>
+            </Link>
           </form>
 
           <p className="footer-text">
