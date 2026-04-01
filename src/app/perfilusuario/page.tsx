@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import Link from "next/link"
 import Navbar from "@/componentes/Navbar";
 import { useRouter } from "next/navigation";
 import styles from "./perfilusuario.module.css";
@@ -42,7 +43,7 @@ export default function ProfilePage() {
         {/* PERFIL */}
         <div className={styles.profileSection}>
           <div className={styles.profileAvatar}>
-            <img src="/img/avatar.png.png" alt="avatar" />
+            <img src="/img/user-profile.png" alt="avatar" />
           </div>
 
           <h2 className={styles.profileName}>Pedrito Buena Onda</h2>
@@ -64,10 +65,12 @@ export default function ProfilePage() {
               <p>Notificaciones</p>
             </div>
 
+            <Link href="/profile" className={styles.linkProfile}>
             <div className={styles.actionItem}>
               <i className="bx bx-user"></i>
               <p>Perfil</p>
             </div>
+            </Link>
           </div>
         </div>
 

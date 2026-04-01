@@ -127,6 +127,11 @@
   transition: 0.3s;
 }
 
+.linkProfile{
+  text-decoration: none;
+}
+
+
 .actionItem:hover i {
   color: #e67e22;
 }
@@ -220,4 +225,9 @@
 
 .add-btn:hover {
   background: #cf711f;
+}
+
+/* ===== link a configuracion /profile ===== */
+div .link-profile{
+  text-decoration: none;
 }
