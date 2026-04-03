@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link'; // Importamos Link para la navegación
 
 export default function CarritoPage() {
   // Carga de Iconos (FontAwesome)
@@ -13,10 +14,10 @@ export default function CarritoPage() {
 
   // --- ESTADO ---
   const [productos, setProductos] = useState([
-    { id: 1, name: "Laptop Gamer", desc: "Alto rendimiento para juegos y trabajo.", price: 3000, badge: "Nuevo", img: "images/laptop.png", count: 1 },
-    { id: 2, name: "Auriculares", desc: "Sonido premium con cancelación.", price: 850, badge: "Oferta", img: "images/auriculares.png", count: 1 },
-    { id: 3, name: "Smartwatch", desc: "Monitoreo de salud y actividad.", price: 1200, badge: "Top", img: "images/smartwatch.png", count: 1 },
-    { id: 4, name: "Teclado Mecánico", desc: "RGB y switches profesionales.", price: 950, badge: "Nuevo", img: "images/teclado.png", count: 1 },
+    { id: 1, name: "Laptop Gamer", desc: "Alto rendimiento para juegos y trabajo.", price: 3000, badge: "Nuevo", img: "/images/laptop.png", count: 1 },
+    { id: 2, name: "Auriculares", desc: "Sonido premium con cancelación.", price: 850, badge: "Oferta", img: "/images/auriculares.png", count: 1 },
+    { id: 3, name: "Smartwatch", desc: "Monitoreo de salud y actividad.", price: 1200, badge: "Top", img: "/images/smartwatch.png", count: 1 },
+    { id: 4, name: "Teclado Mecánico", desc: "RGB y switches profesionales.", price: 950, badge: "Nuevo", img: "/images/teclado.png", count: 1 },
   ]);
 
   const [cart, setCart] = useState<{ [key: string]: { price: number; quantity: number; selected: boolean } }>({});
@@ -47,9 +48,17 @@ export default function CarritoPage() {
   const totalItems = cartEntries.reduce((acc, [_, item]) => item.selected ? acc + item.quantity : acc, 0);
   const totalPrice = cartEntries.reduce((acc, [_, item]) => item.selected ? acc + (item.price * item.quantity) : acc, 0);
 
+  // Mapeo de rutas para el menú
+  const navLinks: { [key: string]: string } = {
+    "Inicio": "/",
+    "Guardados": "/guardados",
+    "Chat": "/chat",
+    "Carrito": "/carrito",
+    "Perfil": "/perfil"
+  };
+
   return (
     <>
-      {/* ESTILOS INYECTADOS DIRECTAMENTE */}
       <style jsx global>{`
         :root {
           --primary: #343959;
@@ -86,7 +95,7 @@ export default function CarritoPage() {
         }
 
         .navLeft { display: flex; align-items: center; gap: 12px; font-size: 1.6rem; }
-        .logo { font-weight: 700; }
+        .logo { font-weight: 700; color: white; text-decoration: none; }
 
         .navSearch {
           display: flex;
@@ -107,8 +116,14 @@ export default function CarritoPage() {
         }
 
         .navMenu { list-style: none; display: flex; gap: 26px; margin: 0; padding: 0; }
-        .navMenu li { cursor: pointer; font-weight: 500; opacity: 0.85; transition: 0.25s; color: white; }
-        .navMenu li:hover { opacity: 1; color: var(--cta); }
+        .navMenu li a { 
+          text-decoration: none;
+          color: white;
+          font-weight: 500; 
+          opacity: 0.85; 
+          transition: 0.25s; 
+        }
+        .navMenu li a:hover { opacity: 1; color: var(--cta); }
         .active-link { color: var(--cta) !important; opacity: 1 !important; }
 
         .layout {
@@ -225,6 +240,7 @@ export default function CarritoPage() {
           cursor: pointer;
           display: flex; align-items: center; justify-content: center;
           gap: 8px; transition: 0.3s;
+          text-decoration: none;
         }
 
         @media (max-width: 900px) {
@@ -236,22 +252,25 @@ export default function CarritoPage() {
       <div className="mainContainer">
         {/* NAVBAR */}
         <nav className="navbar">
-          <div className="navLeft">
+          <Link href="/" className="navLeft logo">
             <i className="fa-solid fa-cart-shopping"></i>
-            <span className="logo">Mi Carrito</span>
-          </div>
+            <span>Mi Carrito</span>
+          </Link>
+
           <div className="navSearch">
             <i className="fa fa-search"></i>
             <input type="text" placeholder="Buscar..." />
           </div>
+
           <ul className="navMenu">
-            {["Inicio", "Guardados", "Chat", "Carrito", "Perfil"].map((item) => (
-              <li 
-                key={item} 
-                className={activeNav === item ? "active-link" : ""}
-                onClick={() => setActiveNav(item)}
-              >
-                {item}
+            {Object.keys(navLinks).map((item) => (
+              <li key={item} onClick={() => setActiveNav(item)}>
+                <Link 
+                  href={navLinks[item]} 
+                  className={activeNav === item ? "active-link" : ""}
+                >
+                  {item}
+                </Link>
               </li>
             ))}
           </ul>
@@ -312,9 +331,10 @@ export default function CarritoPage() {
               <strong>${totalPrice.toLocaleString()} MX</strong>
             </div>
 
-            <button className="pay">
-              <i className="fa-solid fa-credit-card"></i> Comprar
-            </button>
+            {/* BOTÓN DE COMPRA: Redirige a la página de pago */}
+            <Link href="/forma_de_pago" className="pay">
+                <i className="fa-solid fa-credit-card"></i> Comprar
+            </Link>
           </aside>
         </main>
       </div>

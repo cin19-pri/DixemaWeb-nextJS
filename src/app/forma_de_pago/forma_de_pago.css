@@ -1,0 +1,211 @@
+@import url('https://fonts.googleapis.com/css2?family=Balsamiq+Sans:wght@700&family=Poppins:wght@300;400;600&display=swap');
+
+.checkout-wrapper, .checkout-wrapper * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --primario-oscuro: #343959;
+  --primario-medio: #4C5075;
+  --primario-claro: #737AA8;
+  --secundario-suave: #F8BB84;
+  --secundario-fuerte: #EC802B;
+  --blanco: #ffffff;
+  --sombra-soft: 0 10px 30px rgba(52, 57, 89, 0.12);
+}
+
+.checkout-wrapper {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #F4F4FF, #e8e8f9);
+  font-family: 'Poppins', sans-serif;
+  color: var(--primario-medio);
+  padding: 20px;
+}
+
+.checkout-container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* CABECERA */
+.header-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.btn-regresar {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: var(--blanco);
+  border: none;
+  border-radius: 12px;
+  color: var(--primario-oscuro);
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--sombra-soft);
+  margin-bottom: 20px;
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn-regresar:hover {
+  background: var(--primario-oscuro);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(52,57,89,0.25);
+}
+
+.btn-regresar:active {
+  transform: translateY(0);
+  box-shadow: 0 6px 15px rgba(52,57,89,0.2);
+}
+
+.main-title-header {
+  text-align: center;
+}
+
+.main-title-header h1 {
+  font-family: 'Balsamiq Sans', cursive;
+  color: var(--primario-oscuro);
+  font-size: 2.2rem;
+}
+
+.main-title-header p {
+  color: var(--primario-claro);
+  margin-top: 6px;
+}
+
+/* GRID */
+.grid-checkout {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 30px;
+}
+
+/* TARJETAS */
+.card {
+  background: white;
+  border-radius: 22px;
+  padding: 25px;
+  margin-bottom: 20px;
+  box-shadow: var(--sombra-soft);
+}
+
+.card h2 {
+  font-family: 'Balsamiq Sans', cursive;
+  color: var(--primario-oscuro);
+  margin-bottom: 20px;
+}
+
+/* FORM */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.full-width {
+  grid-column: span 2;
+}
+
+.input-field {
+  padding: 14px;
+  border-radius: 12px;
+  border: 2px solid #edeff5;
+}
+
+/* ENVÍO */
+.shipping-option {
+  display: flex;
+  gap: 15px;
+  padding: 18px;
+  border-radius: 15px;
+  border: 2px solid #f0f0f7;
+  cursor: pointer;
+  margin-bottom: 12px;
+  transition: all 0.2s ease;
+}
+
+.shipping-option.active {
+  border-color: var(--secundario-fuerte);
+  background: #fff3e9;
+}
+
+/* INFO PAGO */
+.payment-info-card {
+  border-left: 6px solid var(--secundario-fuerte);
+  display: flex;
+  gap: 15px;
+  background: white;
+  padding: 20px;
+  border-radius: 18px;
+  box-shadow: var(--sombra-soft);
+}
+
+/* RESUMEN */
+.resumen-card {
+  background: var(--primario-oscuro);
+  color: white;
+  border-radius: 25px;
+  padding: 30px;
+  position: sticky;
+  top: 20px;
+}
+
+.product-preview {
+  background: rgba(255,255,255,0.1);
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.linea-costo {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.total-amount {
+  font-size: 2.2rem;
+  color: var(--secundario-suave);
+}
+
+/* BOTÓN PAGAR */
+.btn-finalizar {
+  width: 100%;
+  padding: 18px;
+  background: var(--secundario-fuerte);
+  border: none;
+  border-radius: 15px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: white;
+  margin-top: 20px;
+  cursor: pointer;
+  transition: background-color 0.25s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.btn-finalizar:hover {
+  background: #ff8c3a;
+  transform: translateY(-3px);
+  box-shadow: 0 14px 30px rgba(236,128,43,0.45);
+}
+
+.btn-finalizar:active {
+  background: #ff7a1f;
+  transform: translateY(0);
+  box-shadow: 0 0 0 6px rgba(236,128,43,0.35);
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .grid-checkout {
+    grid-template-columns: 1fr;
+  }
+}
