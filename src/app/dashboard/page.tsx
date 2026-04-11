@@ -1,14 +1,22 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { 
-  LayoutDashboard, Package, ShoppingCart, 
-  Boxes, LogOut, TrendingUp, Users, AlertTriangle 
+  LayoutDashboard,
+  Package,
+  ShoppingCart,
+  Boxes,
+  LogOut,
+  TrendingUp,
+  Users,
+  AlertTriangle
 } from 'lucide-react';
 import './dashboard.css';
 
 export default function DashboardPage() {
   const [tab, setTab] = useState<'panel' | 'productos' | 'ventas' | 'inventario'>('panel');
+  const router = useRouter();
 
   const menu = [
     { id: 'panel', label: 'Panel Principal', icon: <LayoutDashboard size={20} /> },
@@ -39,9 +47,12 @@ export default function DashboardPage() {
         </nav>
 
         <div className="sidebarFooter">
-          <button className="logout">
+          <button
+            className="logout"
+            onClick={() => router.push('/gestion_producto')}
+          >
             <LogOut size={18} />
-            <span>Cerrar sesión</span>
+            <span>Gestion Producto</span>
           </button>
         </div>
       </aside>
@@ -65,27 +76,38 @@ function Panel() {
     <div className="fade-in">
       <div className="header-main">
         <h1>Resumen de Negocio</h1>
-        <p>Bienvenido, <strong>Distribuidora Global</strong></p>
+        <p>
+          Bienvenido, <strong>Distribuidora Global</strong>
+        </p>
       </div>
 
       <div className="stats-grid">
-        <Stat title="Ventas Mes" value="$125,400" icon={<TrendingUp color="#EC802B"/>} />
-        <Stat title="Pedidos Nuevos" value="18" icon={<ShoppingCart color="#EC802B"/>} />
-        <Stat title="Clientes Pyme" value="54" icon={<Users color="#EC802B"/>} />
-        <Stat title="Stock Crítico" value="4" icon={<AlertTriangle color="#ef4444"/>} />
+        <Stat title="Ventas Mes" value="$125,400" icon={<TrendingUp color="#EC802B" />} />
+        <Stat title="Pedidos Nuevos" value="18" icon={<ShoppingCart color="#EC802B" />} />
+        <Stat title="Clientes Pyme" value="54" icon={<Users color="#EC802B" />} />
+        <Stat title="Stock Crítico" value="4" icon={<AlertTriangle color="#ef4444" />} />
       </div>
 
       <div className="lower-grid">
         <div className="card main-chart">
           <h3>Rendimiento de Ventas</h3>
-          <div className="chart-placeholder">Gráfica de actividad próximamente 📊</div>
+          <div className="chart-placeholder">
+            Gráfica de actividad próximamente 📊
+          </div>
         </div>
+
         <div className="card activity-feed">
           <h3>Actividad Reciente</h3>
           <ul className="list-minimal">
-            <li><strong>#552</strong> Abarrotes Lulú <span className="time">2m</span></li>
-            <li><strong>#551</strong> Tienda Neto <span className="time">1h</span></li>
-            <li><strong>Stock</strong> Laptop Air bajo <span className="time">3h</span></li>
+            <li>
+              <strong>#552</strong> Abarrotes Lulú <span className="time">2m</span>
+            </li>
+            <li>
+              <strong>#551</strong> Tienda Neto <span className="time">1h</span>
+            </li>
+            <li>
+              <strong>Stock</strong> Laptop Air bajo <span className="time">3h</span>
+            </li>
           </ul>
         </div>
       </div>
@@ -107,9 +129,9 @@ function Stat({ title, value, icon }: any) {
 
 function Productos() {
   const products = [
-    { name: 'Auriculares Pro', price: '$450', img: 'images/auriculares.png', stock: 12 },
-    { name: 'Laptop Air 13', price: '$12,500', img: 'images/laptop.png', stock: 2 },
-    { name: 'Smartwatch V2', price: '$890', img: 'images/smartwatch.png', stock: 45 },
+    { name: 'Auriculares Pro', price: '$450', img: '/images/auriculares.png', stock: 12 },
+    { name: 'Laptop Air 13', price: '$12,500', img: '/images/laptop.png', stock: 2 },
+    { name: 'Smartwatch V2', price: '$890', img: '/images/smartwatch.png', stock: 45 },
   ];
 
   return (
@@ -123,7 +145,9 @@ function Productos() {
               <h3>{p.name}</h3>
               <div className="price-row">
                 <strong>{p.price}</strong>
-                <span className={p.stock < 5 ? 'low-stock' : ''}>Stock: {p.stock}</span>
+                <span className={p.stock < 5 ? 'low-stock' : ''}>
+                  Stock: {p.stock}
+                </span>
               </div>
             </div>
           </div>
@@ -151,8 +175,12 @@ function Ventas() {
             <tr>
               <td>#ORD-552</td>
               <td>Abarrotes Lulú</td>
-              <td><strong>$1,450</strong></td>
-              <td><span className="badge-status">Entregado</span></td>
+              <td>
+                <strong>$1,450</strong>
+              </td>
+              <td>
+                <span className="badge-status">Entregado</span>
+              </td>
             </tr>
           </tbody>
         </table>
