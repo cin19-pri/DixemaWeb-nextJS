@@ -71,7 +71,7 @@ export default function Navbar({ onSearch }) {
           </Link>
 
           {/* COMPRAS */}
-          <Link href="/miscompras" className={styles.navIcon}>
+          <Link href="/carrito" className={styles.navIcon}>
             <i className="bx bx-cart"></i> Mis compras
           </Link>
 

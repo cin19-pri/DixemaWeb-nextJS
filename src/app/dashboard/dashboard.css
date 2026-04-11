@@ -1,182 +1,247 @@
+/* --- 1. IMPORTACIÓN DE FUENTES Y VARIABLES (Inspirado en el 1er CSS) --- */
 @import url('https://fonts.googleapis.com/css2?family=Balsamiq+Sans:wght@400;700&family=Poppins:wght@300;400;600&display=swap');
 
 :root {
-  --primary-dark: #343959;
-  --primary-medium: #4C5075;
-  --bg-light: #F4F7FE;
-  --accent-soft: #F8BB84;
-  --accent-strong: #EC802B;
-  --white: #ffffff;
-  --shadow: 0 10px 25px rgba(52, 57, 89, 0.08);
+    --color-sidebar: #737aa8; 
+    --color-fondo-main: #F4F4FF;
+    --color-blanco: #FFFFFF;
+    --color-naranja-primario: #f3961c; 
+    --color-naranja-hover: #e08517;      
+    --color-texto-oscuro: #343959;
+    --color-texto-suave: #8E8E93;
+    --color-borde: #E5E5EA;
+    --color-rojo-agotado: #df1818; 
+    --color-verde-disponible: #82c252; 
+    --shadow-soft: 0 10px 25px rgba(115, 122, 168, 0.1);
 }
 
+/* --- 2. RESET Y BASES --- */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-  background: var(--bg-light);
-  font-family: 'Poppins', sans-serif;
-  color: var(--primary-dark);
+    background-color: var(--color-fondo-main);
+    font-family: 'Poppins', sans-serif;
+    color: var(--color-texto-oscuro);
 }
 
 .layout { display: flex; min-height: 100vh; }
 
-/* Sidebar Mejorada */
+/* --- 3. SIDEBAR (Estilo Dixema aplicado) --- */
 .sidebar {
-  width: 260px;
-  background: var(--primary-dark);
-  color: var(--white);
-  display: flex;
-  flex-direction: column;
-  position: fixed; /* Fijo para que no se mueva */
-  height: 100vh;
-  z-index: 1000;
+    width: 260px;
+    background-color: var(--color-sidebar);
+    color: var(--color-blanco);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: 100vh;
+    z-index: 1000;
+    padding: 20px;
+    transition: all 0.3s ease;
 }
 
-.sidebarHeader { padding: 40px 30px; }
+.sidebarHeader { 
+    padding: 40px 15px; 
+}
+
 .sidebarHeader h2 { 
-  font-family: 'Balsamiq Sans', cursive; 
-  font-size: 2.2rem; 
-  color: var(--accent-soft);
-  margin: 0;
+    font-family: 'Balsamiq Sans', cursive; 
+    font-size: 1.8rem; 
+    font-weight: 800;
+    color: var(--color-blanco);
+    margin: 0;
 }
 
-.menu { flex: 1; padding: 20px; }
+.menu { flex: 1; display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+
 .menu button {
-  width: 100%;
-  padding: 14px 18px;
-  margin-bottom: 10px;
-  border-radius: 14px;
-  border: none;
-  background: transparent;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  cursor: pointer;
-  transition: 0.3s;
+    width: 100%;
+    padding: 14px 18px;
+    border-radius: 15px;
+    border: none;
+    background: transparent;
+    color: var(--color-blanco);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    font-size: 1rem;
+    text-align: left;
 }
 
 .menu button:hover, .menu button.active {
-  background: var(--primary-medium);
-  color: var(--accent-soft);
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateX(5px);
 }
 
 .logout {
-  margin: 20px;
-  padding: 12px;
-  background: transparent;
-  border: 1px solid var(--accent-soft);
-  color: var(--accent-soft);
-  border-radius: 12px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
+    margin: 20px 0;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: var(--color-blanco);
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-weight: 600;
 }
 
-/* Contenido Principal con espacio para que NO SE ENCIME */
+.logout:hover {
+    background: var(--color-rojo-agotado);
+    border-color: var(--color-rojo-agotado);
+}
+
+/* --- 4. CONTENIDO PRINCIPAL --- */
 .content {
-  flex: 1;
-  margin-left: 260px; /* Igual al ancho de la sidebar */
-  padding: 40px;
-  min-height: 100vh;
+    flex: 1;
+    margin-left: 260px; 
+    padding: 40px;
+    min-height: 100vh;
 }
 
-.view-wrapper { max-width: 1200px; margin: 0 auto; }
+.view-wrapper { max-width: 1100px; margin: 0 auto; }
 
-h1 { font-family: 'Balsamiq Sans', cursive; margin-bottom: 25px; font-size: 2rem; }
-
-/* Grid de Tarjetas */
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 25px;
-  margin-bottom: 35px;
+h1 { 
+    font-family: 'Poppins', sans-serif; 
+    font-weight: 700;
+    margin-bottom: 25px; 
+    font-size: 2.2rem; 
 }
 
+h1 span { 
+    color: var(--color-naranja-primario); 
+    font-family: 'Balsamiq Sans', cursive; 
+}
+
+/* --- 5. TARJETAS Y GRID (Estilo suavizado) --- */
 .card {
-  background: var(--white);
-  padding: 25px;
-  border-radius: 20px;
-  box-shadow: var(--shadow);
+    background: var(--color-blanco);
+    padding: 25px;
+    border-radius: 20px;
+    border: 1px solid var(--color-borde);
+    box-shadow: var(--shadow-soft);
 }
 
-.stat-card {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 25px;
+    margin-bottom: 35px;
 }
 
-.stat-content strong { font-size: 1.8rem; color: var(--primary-dark); }
+.stat-content strong { 
+    font-size: 2rem; 
+    color: var(--color-texto-oscuro); 
+    display: block;
+}
 
-.lower-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 25px;
+.stat-content p {
+    color: var(--color-texto-suave);
+    font-weight: 500;
 }
 
 /* Productos */
 .products-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 25px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 25px;
+}
+
+.product-card {
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
 }
 
 .product-card img {
-  width: 100%;
-  height: 160px;
-  object-fit: cover;
-  border-radius: 12px;
-  margin-bottom: 15px;
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 15px;
+    margin-bottom: 15px;
+    background-color: var(--color-fondo-main);
 }
 
-.price-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 10px;
-}
-
-.low-stock { color: #ef4444; font-weight: 600; font-size: 0.8rem; }
-
-/* Tablas */
+/* --- 6. TABLAS Y BADGES --- */
 .table-card { padding: 0; overflow: hidden; }
+
 table { width: 100%; border-collapse: collapse; }
-th { background: #F9FAFB; padding: 15px 20px; text-align: left; font-size: 0.9rem; color: var(--primary-medium); }
-td { padding: 18px 20px; border-top: 1px solid #F3F4F6; }
+
+th { 
+    background: #F9FAFB; 
+    padding: 18px 20px; 
+    text-align: left; 
+    font-size: 0.85rem; 
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--color-sidebar); 
+}
+
+td { 
+    padding: 18px 20px; 
+    border-top: 1px solid var(--color-borde);
+    color: var(--color-texto-oscuro);
+}
 
 .badge-status {
-  background: #DCFCE7;
-  color: #166534;
-  padding: 5px 12px;
-  border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: white;
+    background-color: var(--color-verde-disponible); /* Default */
 }
 
-/* Alertas */
+.badge-status.exhausted { background-color: var(--color-rojo-agotado); }
+
+/* --- 7. BOTONES Y ACENTOS --- */
+.btn-action {
+    background-color: var(--color-naranja-primario);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-action:hover {
+    background-color: var(--color-naranja-hover);
+    box-shadow: 0 5px 15px rgba(243, 150, 28, 0.3);
+}
+
 .alert-card {
-  border-left: 6px solid var(--accent-strong);
-  display: flex;
-  gap: 20px;
-  align-items: center;
+    border-left: 6px solid var(--color-naranja-primario);
 }
 
-/* Animación de entrada */
+/* --- 8. ANIMACIONES Y RESPONSIVO --- */
 .fade-in {
-  animation: fadeIn 0.5s ease;
+    animation: fadeIn 0.5s ease-out;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(15px); }
-  to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-/* Ajuste para tablets */
 @media (max-width: 1024px) {
-  .lower-grid { grid-template-columns: 1fr; }
-  .sidebar { width: 80px; }
-  .sidebar span, .sidebar h2, .sidebarHeader span { display: none; }
-  .content { margin-left: 80px; }
+    .sidebar { width: 80px; padding: 15px 10px; }
+    .sidebar h2, .menu button span, .logout span { display: none; }
+    .menu button { justify-content: center; padding: 15px; }
+    .content { margin-left: 80px; padding: 20px; }
+}
+
+@media (max-width: 480px) {
+    .content { margin-left: 0; padding: 15px; }
+    .sidebar { transform: translateX(-100%); }
+    .sidebar.open { transform: translateX(0); width: 240px; }
 }
