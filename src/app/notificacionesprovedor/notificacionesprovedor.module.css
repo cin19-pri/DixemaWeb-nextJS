@@ -1,0 +1,124 @@
+/* ===== CONTENEDOR ===== */
+
+.notificationscontainer {
+  padding: 30px 20px 50px;
+}
+
+/* ===== HEADER ===== */
+
+.notificationsheader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.titleleft {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.titleleft h1 {
+  color: #e67e22;
+  font-size: 28px;
+  border-bottom: 4px solid #e6a86b;
+  padding-bottom: 5px;
+}
+
+.backicon {
+  font-size: 26px;
+  color: #e67e22;
+  cursor: pointer;
+}
+
+.headeravatar img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #a2d2d2;
+}
+
+/* ===== SUBTEXTO ===== */
+
+.notificationssubtitle {
+  margin: 20px 0 30px;
+}
+
+.notificationssubtitle h4 {
+  margin: 0;
+  font-weight: 600;
+}
+
+.notificationssubtitle p {
+  margin-top: 5px;
+  color: #666;
+  font-size: 14px;
+}
+
+/* ===== TARJETAS ===== */
+
+.notificationcard {
+  background: white;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  margin-bottom: 18px;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  position: relative;
+  transition: 0.3s;
+}
+
+.notificationcard:hover {
+  transform: translateY(-3px);
+}
+
+/* icono circular */
+
+.iconcircle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 22px;
+}
+
+.pink {
+  background: #e4bff7;
+}
+
+.lila {
+  background: #c5bff7;
+}
+
+.dark {
+  background: #5e56ac;
+}
+
+/* contenido */
+
+.notificationcontent h3 {
+  margin: 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.notificationcontent p {
+  margin: 5px 0 0;
+  font-size: 13px;
+  color: #777;
+}
+
+/* fecha */
+
+.date {
+  position: absolute;
+  right: 15px;
+  bottom: 12px;
+  font-size: 12px;
+  color: #aaa;
+}
