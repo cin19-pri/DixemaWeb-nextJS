@@ -93,7 +93,7 @@ a.secondary {
   border-color: var(--button-secondary-border);
 }
 
-/* Enable hover only on non-touch devices */
+/* Hover effects */
 @media (hover: hover) and (pointer: fine) {
   a.primary:hover {
     background: var(--button-primary-hover);
@@ -106,22 +106,7 @@ a.secondary {
   }
 }
 
-@media (max-width: 600px) {
-  .main {
-    padding: 48px 24px;
-  }
-
-  .intro {
-    gap: 16px;
-  }
-
-  .intro h1 {
-    font-size: 32px;
-    line-height: 40px;
-    letter-spacing: -1.92px;
-  }
-}
-
+/* Dark Mode */
 @media (prefers-color-scheme: dark) {
   .logo {
     filter: invert();
@@ -130,12 +115,59 @@ a.secondary {
   .page {
     --background: #000;
     --foreground: #000;
-
     --text-primary: #ededed;
     --text-secondary: #999;
-
     --button-primary-hover: #ccc;
     --button-secondary-hover: #1a1a1a;
     --button-secondary-border: #1a1a1a;
+  }
+}
+
+/*_________________________________________________________*/
+/* --- DISEÑO RESPONSIVO --- */
+/*_________________________________________________________*/
+
+/* Tablets (hasta 992px) */
+@media (max-width: 992px) {
+  .main {
+    padding: 80px 40px; /* Reduce un poco el espacio exagerado */
+    max-width: 90%;     /* Permite que crezca un poco más en tablets */
+    min-height: auto;
+  }
+}
+
+/* Celulares (hasta 480px) */
+@media (max-width: 480px) {
+  .main {
+    padding: 48px 24px;
+    align-items: center; /* Centra el contenido en móviles para mejor estética */
+  }
+
+  .intro {
+    gap: 16px;
+    align-items: center;
+    text-align: center;
+  }
+
+  .intro h1 {
+    font-size: 32px;
+    line-height: 40px;
+    letter-spacing: -1.2px;
+  }
+
+  .intro p {
+    font-size: 16px;
+    line-height: 28px;
+  }
+
+  .ctas {
+    flex-direction: column; /* Apila los botones uno sobre otro */
+    gap: 12px;
+    align-items: center;
+  }
+
+  .ctas a {
+    width: 100%; /* Botones de ancho completo para facilitar el clic */
+    max-width: 280px;
   }
 }
