@@ -1,4 +1,4 @@
-/* --- 1. IMPORTACIÓN DE FUENTES Y VARIABLES (Inspirado en el 1er CSS) --- */
+/* --- 1. IMPORTACIÓN DE FUENTES Y VARIABLES --- */
 @import url('https://fonts.googleapis.com/css2?family=Balsamiq+Sans:wght@400;700&family=Poppins:wght@300;400;600&display=swap');
 
 :root {
@@ -22,11 +22,12 @@ body {
     background-color: var(--color-fondo-main);
     font-family: 'Poppins', sans-serif;
     color: var(--color-texto-oscuro);
+    overflow-x: hidden;
 }
 
 .layout { display: flex; min-height: 100vh; }
 
-/* --- 3. SIDEBAR (Estilo Dixema aplicado) --- */
+/* --- 3. SIDEBAR --- */
 .sidebar {
     width: 260px;
     background-color: var(--color-sidebar);
@@ -35,21 +36,22 @@ body {
     flex-direction: column;
     position: fixed;
     height: 100vh;
-    z-index: 1000;
+    z-index: 1100;
     padding: 20px;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .sidebarHeader { 
-    padding: 40px 15px; 
+    padding: 30px 15px; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .sidebarHeader h2 { 
     font-family: 'Balsamiq Sans', cursive; 
     font-size: 1.8rem; 
     font-weight: 800;
-    color: var(--color-blanco);
-    margin: 0;
 }
 
 .menu { flex: 1; display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
@@ -68,17 +70,15 @@ body {
     transition: all 0.3s ease;
     font-weight: 500;
     font-size: 1rem;
-    text-align: left;
 }
 
 .menu button:hover, .menu button.active {
     background-color: rgba(255, 255, 255, 0.2);
-    transform: translateX(5px);
 }
 
 .logout {
-    margin: 20px 0;
-    padding: 12px;
+    margin-top: auto;
+    padding: 14px;
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.3);
     color: var(--color-blanco);
@@ -88,13 +88,7 @@ body {
     align-items: center;
     gap: 8px;
     cursor: pointer;
-    transition: 0.3s;
     font-weight: 600;
-}
-
-.logout:hover {
-    background: var(--color-rojo-agotado);
-    border-color: var(--color-rojo-agotado);
 }
 
 /* --- 4. CONTENIDO PRINCIPAL --- */
@@ -107,19 +101,10 @@ body {
 
 .view-wrapper { max-width: 1100px; margin: 0 auto; }
 
-h1 { 
-    font-family: 'Poppins', sans-serif; 
-    font-weight: 700;
-    margin-bottom: 25px; 
-    font-size: 2.2rem; 
-}
+h1 { font-weight: 700; margin-bottom: 25px; font-size: 2.2rem; }
+h1 span { color: var(--color-naranja-primario); font-family: 'Balsamiq Sans', cursive; }
 
-h1 span { 
-    color: var(--color-naranja-primario); 
-    font-family: 'Balsamiq Sans', cursive; 
-}
-
-/* --- 5. TARJETAS Y GRID (Estilo suavizado) --- */
+/* --- 5. COMPONENTES Y GRIDS --- */
 .card {
     background: var(--color-blanco);
     padding: 25px;
@@ -135,113 +120,114 @@ h1 span {
     margin-bottom: 35px;
 }
 
-.stat-content strong { 
-    font-size: 2rem; 
-    color: var(--color-texto-oscuro); 
-    display: block;
+.stat-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.stat-content p {
-    color: var(--color-texto-suave);
-    font-weight: 500;
+.stat-content strong { font-size: 1.8rem; display: block; margin-top: 5px; }
+
+/* --- 6. HEADER MÓVIL Y BOTONES --- */
+.mobile-header {
+    display: none; /* Oculto en PC */
+    background: var(--color-blanco);
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--color-borde);
+    align-items: center;
+    gap: 15px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
-/* Productos */
-.products-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 25px;
-}
-
-.product-card {
-    transition: transform 0.3s ease;
-}
-
-.product-card:hover {
-    transform: translateY(-5px);
-}
-
-.product-card img {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
-    border-radius: 15px;
-    margin-bottom: 15px;
-    background-color: var(--color-fondo-main);
-}
-
-/* --- 6. TABLAS Y BADGES --- */
-.table-card { padding: 0; overflow: hidden; }
-
-table { width: 100%; border-collapse: collapse; }
-
-th { 
-    background: #F9FAFB; 
-    padding: 18px 20px; 
-    text-align: left; 
-    font-size: 0.85rem; 
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--color-sidebar); 
-}
-
-td { 
-    padding: 18px 20px; 
-    border-top: 1px solid var(--color-borde);
-    color: var(--color-texto-oscuro);
-}
-
-.badge-status {
-    padding: 6px 14px;
-    border-radius: 10px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: white;
-    background-color: var(--color-verde-disponible); /* Default */
-}
-
-.badge-status.exhausted { background-color: var(--color-rojo-agotado); }
-
-/* --- 7. BOTONES Y ACENTOS --- */
-.btn-action {
-    background-color: var(--color-naranja-primario);
-    color: white;
+.hamburger-btn, .close-menu-btn {
+    background: none;
     border: none;
-    padding: 10px 20px;
-    border-radius: 12px;
-    font-weight: 700;
     cursor: pointer;
-    transition: 0.3s;
+    color: var(--color-sidebar);
 }
 
-.btn-action:hover {
-    background-color: var(--color-naranja-hover);
-    box-shadow: 0 5px 15px rgba(243, 150, 28, 0.3);
+.close-menu-btn { color: white; display: none; }
+
+.menu-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    z-index: 1050;
 }
 
-.alert-card {
-    border-left: 6px solid var(--color-naranja-primario);
-}
+/* --- 7. TABLAS --- */
+.table-responsive { width: 100%; overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; min-width: 600px; }
+th { background: #F9FAFB; padding: 15px; text-align: left; color: var(--color-sidebar); }
+td { padding: 15px; border-top: 1px solid var(--color-borde); }
 
-/* --- 8. ANIMACIONES Y RESPONSIVO --- */
-.fade-in {
-    animation: fadeIn 0.5s ease-out;
-}
-
+/* --- 8. ANIMACIONES --- */
+.fade-in { animation: fadeIn 0.4s ease-out; }
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-@media (max-width: 1024px) {
-    .sidebar { width: 80px; padding: 15px 10px; }
-    .sidebar h2, .menu button span, .logout span { display: none; }
-    .menu button { justify-content: center; padding: 15px; }
-    .content { margin-left: 80px; padding: 20px; }
-}
+/*_________________________________________________________*/
+/* --- RESPONSIVO CORREGIDO (SIN LÍNEA AZUL IZQUIERDA) --- */
+/*_________________________________________________________*/
 
-@media (max-width: 480px) {
-    .content { margin-left: 0; padding: 15px; }
-    .sidebar { transform: translateX(-100%); }
-    .sidebar.open { transform: translateX(0); width: 240px; }
+@media (max-width: 992px) {
+    .sidebar { 
+        /* 1. Lo mandamos mucho más lejos a la izquierda para asegurar que desaparezca */
+        left: -400px !important; 
+        position: fixed;
+        width: 280px;
+        height: 100vh;
+        /* 2. Quitamos cualquier borde o sombra que pueda verse como una raya */
+        border: none !important;
+        outline: none !important;
+        box-shadow: none !important;
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 2000;
+    }
+
+    /* 3. Cuando el menú se abre, usamos transform en lugar de left para que sea más fluido */
+    .sidebar.open { 
+        transform: translateX(400px); 
+        box-shadow: 10px 0 40px rgba(0, 0, 0, 0.2) !important;
+    }
+
+    .content { 
+        margin-left: 0 !important; 
+        padding: 20px;
+        /* 4. Forzamos que no haya bordes accidentales a la izquierda */
+        border-left: none !important;
+        position: relative;
+        left: 0;
+    }
+
+    /* 5. Aseguramos que el layout general no tenga bordes azules */
+    .layout {
+        border-left: none !important;
+    }
+
+    .mobile-header { 
+        display: flex; 
+        justify-content: space-between;
+        align-items: center;
+        background: var(--color-fondo-main) !important; 
+        padding: 15px 20px;
+        border: none !important; /* Eliminamos cualquier raya aquí también */
+        box-shadow: none !important;
+        position: sticky;
+        top: 0;
+        z-index: 900;
+    }
+
+    .hamburger-btn {
+        background: transparent !important;
+        color: var(--color-sidebar);
+        border: none !important;
+        padding: 5px;
+    }
 }
