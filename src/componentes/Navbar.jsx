@@ -77,14 +77,6 @@ export default function Navbar({ onSearch }) {
 
           {/* USUARIO */}
           <div className={styles.userInfo}>
-            <div className={styles.userGroup}>
-              <img
-                src="/img/avatar.png.png"
-                alt="user"
-                className={styles.userAvatar}
-              />
-              <span className={styles.userName}>Manuel Mendoza</span>
-            </div>
             <button onClick={() => handleLogout()} className={styles.btnlogout}>
               Cerrar Sesión
             </button>
