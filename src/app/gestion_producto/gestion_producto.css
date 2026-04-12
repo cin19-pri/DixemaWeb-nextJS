@@ -47,7 +47,11 @@
     flex-grow: 1;
 }
 
+/* AQUÍ ESTÁ EL CAMBIO: Se agregó display flex y gap para separar icono de texto */
 .nav-item {
+    display: flex;       
+    align-items: center; 
+    gap: 15px;           /* <--- Espacio entre icono y letra */
     color: var(--color-blanco);
     text-decoration: none;
     padding: 14px 18px;
@@ -235,7 +239,7 @@
     transition: 0.2s;
     margin-left: 12px;
 }
-.btn-edit-inline:hover { background-color: var(--color-sidebar); color: white; }
+
 
 /* --- 9. CALENDARIO --- */
 .calendar-widget {
