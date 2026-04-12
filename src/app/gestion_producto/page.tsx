@@ -52,7 +52,7 @@ export default function DashboardPage() {
         <div className="logo-section"><span className="logo-text">Dixema</span></div>
         <nav className="nav-menu">
           <Link href="/gestion_producto" className="nav-item active">Gestión</Link>
-          <Link href="#" className="nav-item">Dashboard</Link>
+          <Link href="/dashboard" className="nav-item">Dashboard</Link>
           <Link href="/nuevo_producto" className="nav-item">Añadir nuevo producto</Link>
           <Link href="#" className="nav-item">Mensajería</Link>
           <Link href="#" className="nav-item">Notificaciones</Link>
