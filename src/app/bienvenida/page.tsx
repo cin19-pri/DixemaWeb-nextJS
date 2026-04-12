@@ -4,8 +4,13 @@ import "./bienvenida.css"
 
 export default function BienvenidaPage() {
   return (
-    <>
       <main className="background-dots">
+        <Link href="../" className="btn-back" >
+          <svg  xmlns="http://www.w3.org/2000/svg" width="30" height="30"  
+          fill="currentColor" viewBox="0 0 24 24" >
+          <path d="m6 12 6 5v-4h6v-2h-6V7z"></path>
+          </svg>
+        </Link>
         <section className="container">
           <h1 className="title">
             ¡Por favor elige la <span>opción</span> con la que
@@ -45,6 +50,6 @@ export default function BienvenidaPage() {
           </section>
         </section>
       </main>
-    </>
+    
   )
 }

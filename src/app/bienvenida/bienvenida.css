@@ -41,6 +41,35 @@ body {
     background-color: var(--light-pink-color);          /* Espaciado entre cada punto */
 }
 
+/* --- 4. BOTÓN REGRESAR (Ajuste de altura) --- */
+.btn-back {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--dark-orange);
+    border-radius: 1rem;
+    border: none;
+    text-decoration: none;
+    color: var(--light-pink-color);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    /* Ajuste: padding mínimo para reducir altura visual */
+    padding: 6px 8px; 
+    transition: color 0.3s;
+}
+
+
+.btn-back:hover { color: var(--color-fondo-externo);
+  background-color: var(--dark-orange);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 0 var(--color-fondo-externo) ;  }
+
+
 /* Contenedor principal */
 .container {
   width: 100%; 
