@@ -50,11 +50,11 @@ export default function CarritoPage() {
 
   // Mapeo de rutas para el menú
   const navLinks: { [key: string]: string } = {
-    "Inicio": "/",
-    "Guardados": "/guardados",
-    "Chat": "/chat",
+    "Inicio": "/iniciousuarios",
+    "Guardados": "/favoritos",
+    "Chat": "/notificaciones",
     "Carrito": "/carrito",
-    "Perfil": "/perfil"
+    "Perfil": "/perfilusuario"
   };
 
   return (
