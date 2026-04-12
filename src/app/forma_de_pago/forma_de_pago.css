@@ -203,9 +203,79 @@
   box-shadow: 0 0 0 6px rgba(236,128,43,0.35);
 }
 
-/* RESPONSIVE */
-@media (max-width: 900px) {
-  .grid-checkout {
-    grid-template-columns: 1fr;
-  }
+/*_________________________________________________________*/
+/* --- 8. DISEÑO RESPONSIVO (CHECKOUT) --- */
+/*_________________________________________________________*/
+
+/* Tablets y Laptops pequeñas (hasta 992px) */
+@media (max-width: 992px) {
+    .grid-checkout {
+        grid-template-columns: 1fr; /* Una sola columna */
+        gap: 20px;
+    }
+
+    .resumen-card {
+        position: relative; /* Ya no se queda pegado arriba en tablets */
+        top: 0;
+        order: -1; /* Ponemos el resumen arriba para que el usuario vea qué paga primero */
+    }
+
+    .main-title-header h1 {
+        font-size: 1.8rem;
+    }
+}
+
+/* Celulares (hasta 480px) */
+@media (max-width: 480px) {
+    .checkout-wrapper {
+        padding: 10px;
+    }
+
+    .card {
+        padding: 20px 15px;
+        border-radius: 18px;
+    }
+
+    /* Formulario a una sola columna en celulares */
+    .form-grid {
+        grid-template-columns: 1fr; 
+    }
+
+    .full-width {
+        grid-column: span 1;
+    }
+
+    .input-field {
+        padding: 12px;
+        font-size: 14px;
+    }
+
+    .main-title-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .total-amount {
+        font-size: 1.8rem;
+    }
+
+    .payment-info-card {
+        flex-direction: column; /* Icono arriba y texto abajo */
+        align-items: center;
+        text-align: center;
+        gap: 10px;
+    }
+
+    .btn-regresar {
+        width: 100%; /* Botón de regresar ocupa todo el ancho */
+        justify-content: center;
+    }
+
+    .shipping-option {
+        padding: 14px;
+    }
+
+    .btn-finalizar {
+        padding: 16px;
+        font-size: 1rem;
+    }
 }

@@ -1,0 +1,252 @@
+/* --- 1. VARIABLES GLOBALES --- */
+:root {
+    --color-sidebar: #737aa8; 
+    --color-fondo-main: #F4F4FF; /* Color de fondo general */
+    --color-blanco: #FFFFFF;
+    --color-naranja-primario: #f3961c; 
+    --color-texto-oscuro: #343959;
+    --color-texto-suave: #8E8E93;
+    --color-borde: #E5E5EA;
+}
+
+/* --- 2. LAYOUT --- */
+.añadir-producto-wrapper {
+    display: flex;
+    min-height: 100vh;
+    background-color: var(--color-fondo-main) !important;
+    font-family: 'Poppins', sans-serif;
+}
+
+.main-content-fluid {
+    padding: 40px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: var(--color-fondo-main) !important;
+}
+
+/* --- 3. ENCABEZADO (SIN BARRA AZUL) --- */
+.content-header-minimal {
+    background-color: var(--color-fondo-main) !important; 
+    background-image: none !important;
+    box-shadow: none !important;
+    border: none !important;
+    transition: all 0.4s ease;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 20px 0;
+}
+
+.fade-out {
+    opacity: 0 !important;
+    transform: translateY(-20px) !important;
+    pointer-events: none;
+    visibility: hidden;
+    height: 0;
+}
+
+.highlight-text {
+    color: var(--color-naranja-primario);
+    font-family: 'Balsamiq Sans', cursive;
+}
+
+/* --- 4. FORMULARIO Y CARDS --- */
+.card-dixema {
+    background: var(--color-blanco);
+    padding: 25px;
+    border-radius: 20px;
+    border: 1px solid var(--color-borde);
+    margin-bottom: 25px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 120px;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: var(--color-texto-oscuro);
+}
+
+/* --- 5. ZONA DE CARGA DE IMAGEN --- */
+.image-upload-zone {
+    width: 100%;
+    height: 250px;
+    border: 2px dashed var(--color-borde);
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background: #fafaff;
+    transition: all 0.3s ease;
+}
+
+.image-upload-zone.has-image {
+    border-style: solid;
+    border-color: var(--color-naranja-primario);
+}
+
+.upload-preview { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: contain; 
+}
+
+.upload-placeholder {
+    text-align: center;
+    color: var(--color-texto-suave);
+}
+
+.file-input-hidden { 
+    position: absolute; 
+    opacity: 0; 
+    width: 100%; 
+    height: 100%; 
+    cursor: pointer; 
+    z-index: 10;
+}
+
+.btn-upload-trigger {
+    margin-top: 10px;
+    padding: 8px 15px;
+    background: var(--color-sidebar);
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    font-size: 0.9rem;
+}
+
+/* --- 6. INPUTS Y TEXTAREA --- */
+.input-group { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 8px; 
+    margin-bottom: 15px; 
+}
+
+.input-group label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-texto-oscuro);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.input-row { display: flex; gap: 15px; }
+.flex-1 { flex: 1; }
+
+.input-dixema {
+    padding: 12px;
+    border-radius: 10px;
+    border: 1.5px solid var(--color-borde);
+    outline: none;
+    width: 100%;
+    transition: 0.3s;
+}
+
+.input-dixema:focus { 
+    border-color: var(--color-naranja-primario); 
+}
+
+.textarea-dixema {
+    resize: none;
+}
+
+/* --- 7. ACCIONES FLOTANTES (SIN BARRA AZUL) --- */
+.form-actions-bar {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 1100px;
+    display: flex;
+    justify-content: space-between;
+    background: transparent !important; 
+    z-index: 100;
+}
+
+.btn-secondary {
+    background: var(--color-blanco);
+    border: 1px solid var(--color-borde);
+    padding: 12px 30px;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.btn-primary-large {
+    background: var(--color-naranja-primario);
+    color: white;
+    border: none;
+    padding: 12px 40px;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 15px rgba(243, 150, 28, 0.4);
+}
+
+/*_________________________________________________________*/
+/* --- 8. DISEÑO RESPONSIVO (ADAPTACIÓN A MÓVILES) --- */
+/*_________________________________________________________*/
+
+/* Tablets (hasta 992px) */
+@media (max-width: 992px) {
+    .form-grid {
+        grid-template-columns: 1fr; /* Una sola columna para el formulario */
+        gap: 20px;
+    }
+    
+    .main-content-fluid {
+        padding: 20px;
+    }
+}
+
+/* Celulares (hasta 480px) */
+@media (max-width: 480px) {
+    .content-header-minimal h1 {
+        font-size: 1.8rem; /* Título más pequeño */
+        text-align: center;
+    }
+
+    .content-header-minimal p {
+        text-align: center;
+        font-size: 0.9rem;
+    }
+
+    .input-row {
+        flex-direction: column; /* Apila campos de precio (menudeo/mayoreo) */
+        gap: 0;
+    }
+
+    .card-dixema {
+        padding: 20px 15px; /* Más compacto */
+    }
+
+    .form-actions-bar {
+        flex-direction: column-reverse; /* Botón de guardar arriba del de cancelar */
+        gap: 10px;
+        bottom: 20px;
+        width: 95%;
+    }
+
+    .btn-primary-large, .btn-secondary {
+        width: 100%; /* Botones a lo ancho de la pantalla */
+        justify-content: center;
+    }
+}

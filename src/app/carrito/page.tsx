@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link'; // Importamos Link para la navegación
+import Link from 'next/link';
 
 export default function CarritoPage() {
   // Carga de Iconos (FontAwesome)
@@ -22,6 +22,7 @@ export default function CarritoPage() {
 
   const [cart, setCart] = useState<{ [key: string]: { price: number; quantity: number; selected: boolean } }>({});
   const [activeNav, setActiveNav] = useState("Carrito");
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // Estado para menú hamburguesa
 
   // --- LÓGICA ---
   const updateLocalCount = (id: number, delta: number) => {
@@ -48,11 +49,10 @@ export default function CarritoPage() {
   const totalItems = cartEntries.reduce((acc, [_, item]) => item.selected ? acc + item.quantity : acc, 0);
   const totalPrice = cartEntries.reduce((acc, [_, item]) => item.selected ? acc + (item.price * item.quantity) : acc, 0);
 
-  // Mapeo de rutas para el menú
   const navLinks: { [key: string]: string } = {
     "Inicio": "/iniciousuarios",
     "Guardados": "/favoritos",
-    "Chat": "/notificaciones",
+    "Notificaciones": "/notificaciones",
     "Carrito": "/carrito",
     "Perfil": "/perfilusuario"
   };
@@ -71,14 +71,11 @@ export default function CarritoPage() {
         }
 
         body {
-          margin: 0;
-          padding: 0;
+          margin: 0; padding: 0;
           font-family: 'Poppins', sans-serif;
           background-color: #ececf6;
           color: #333;
         }
-
-        .mainContainer { min-height: 100vh; }
 
         .navbar {
           max-width: 1300px;
@@ -92,169 +89,118 @@ export default function CarritoPage() {
           border-radius: 22px;
           box-shadow: 0 10px 30px rgba(0,0,0,0.15);
           backdrop-filter: blur(8px);
+          position: relative;
+          z-index: 1000;
         }
 
-        .navLeft { display: flex; align-items: center; gap: 12px; font-size: 1.6rem; }
-        .logo { font-weight: 700; color: white; text-decoration: none; }
+        .logo { font-size: 1.6rem; font-weight: 700; color: white; text-decoration: none; display: flex; align-items: center; gap: 12px; }
 
         .navSearch {
-          display: flex;
-          align-items: center;
-          background: rgba(244, 244, 255, 0.55);
+          display: flex; align-items: center;
+          background: rgba(244, 244, 255, 0.2);
           border-radius: 30px;
-          padding: 10px 18px;
+          padding: 8px 18px;
           gap: 10px;
         }
 
-        .navSearch input {
-          background: transparent;
-          border: none;
-          outline: none;
-          width: 150px;
-          color: var(--primary);
-          font-weight: 500;
-        }
+        .navSearch input { background: transparent; border: none; outline: none; width: 120px; color: white; }
+        .navSearch input::placeholder { color: rgba(255,255,255,0.7); }
 
-        .navMenu { list-style: none; display: flex; gap: 26px; margin: 0; padding: 0; }
-        .navMenu li a { 
-          text-decoration: none;
-          color: white;
-          font-weight: 500; 
-          opacity: 0.85; 
-          transition: 0.25s; 
-        }
-        .navMenu li a:hover { opacity: 1; color: var(--cta); }
-        .active-link { color: var(--cta) !important; opacity: 1 !important; }
+        .navMenu { list-style: none; display: flex; gap: 20px; margin: 0; padding: 0; }
+        .navMenu li a { text-decoration: none; color: white; font-weight: 500; opacity: 0.8; transition: 0.25s; }
+        .navMenu li a:hover, .active-link { opacity: 1; color: var(--cta) !important; }
+
+        .hamburger { display: none; background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
 
         .layout {
           display: grid;
-          grid-template-columns: 3fr 1.2fr;
+          grid-template-columns: 1fr 350px;
           gap: 30px;
-          margin-top: 30px;
           max-width: 1300px;
-          margin-left: auto;
-          margin-right: auto;
+          margin: 30px auto;
           padding: 0 20px 50px;
         }
 
         .products {
           display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-          gap: 25px;
+          grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+          gap: 20px;
         }
 
         .card {
-          position: relative;
-          background: var(--panel-bg);
-          color: var(--light);
-          border-radius: 22px;
-          overflow: hidden;
-          box-shadow: 0 12px 28px rgba(0,0,0,0.2);
+          position: relative; background: var(--panel-bg); color: var(--light);
+          border-radius: 22px; overflow: hidden; box-shadow: 0 12px 28px rgba(0,0,0,0.2);
           transition: transform 0.3s ease;
-          backdrop-filter: blur(8px);
         }
-
-        .card:hover { transform: translateY(-6px); }
-        .card img { width: 100%; height: 180px; object-fit: cover; }
+        .card:hover { transform: translateY(-5px); }
+        .card img { width: 100%; height: 200px; object-fit: cover; }
 
         .badge {
-          position: absolute;
-          top: 12px; left: 12px;
-          background: var(--warning);
-          color: var(--primary);
-          padding: 6px 14px;
-          border-radius: 20px;
-          font-size: 12px;
-          font-weight: 600;
+          position: absolute; top: 12px; left: 12px;
+          background: var(--warning); color: var(--primary);
+          padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700;
         }
 
-        .content { padding: 20px; }
-        .content h3 { margin: 0 0 5px 0; }
-        .content p { font-size: 14px; opacity: 0.9; margin-bottom: 15px; }
+        .content { padding: 15px; }
+        .price { font-size: 1.3rem; color: var(--cta); font-weight: 700; }
 
-        .priceRow { display: flex; justify-content: space-between; align-items: center; }
-        .price { font-size: 1.2rem; color: var(--cta); font-weight: 600; }
-
-        .controls {
-          margin-top: 15px;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        }
-
-        .counter {
-          display: flex;
-          align-items: center;
-          background: rgba(0,0,0,0.3);
-          border-radius: 20px;
-          overflow: hidden;
-        }
-
-        .counter button {
-          background: none; border: none;
-          color: var(--light);
-          padding: 6px 14px;
-          cursor: pointer;
-          font-size: 18px;
-        }
+        .controls { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; }
+        .counter { display: flex; align-items: center; background: rgba(0,0,0,0.3); border-radius: 20px; }
+        .counter button { background: none; border: none; color: white; padding: 5px 12px; cursor: pointer; font-size: 1.2rem; }
+        .counter span { width: 25px; text-align: center; font-weight: 600; }
 
         .add-btn {
-          background: var(--accent);
-          border: none;
-          border-radius: 50%;
-          width: 42px; height: 42px;
-          color: var(--light);
-          cursor: pointer;
-          transition: 0.2s;
-          display: flex; align-items: center; justify-content: center;
+          background: var(--accent); border: none; border-radius: 50%;
+          width: 40px; height: 40px; color: white; cursor: pointer; transition: 0.3s;
         }
-        .add-btn:hover { background: var(--cta); }
+        .add-btn:hover { background: var(--cta); transform: rotate(90deg); }
 
         .summary {
-          position: sticky;
-          top: 30px;
-          background: var(--panel-bg);
-          color: var(--light);
-          border-radius: 24px;
-          padding: 28px;
-          height: fit-content;
-          box-shadow: 0 12px 28px rgba(0,0,0,0.2);
+          position: sticky; top: 20px; height: fit-content;
+          background: var(--panel-bg); color: white; padding: 25px;
+          border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
-
-        .summary h2 { margin-top: 0; margin-bottom: 20px; }
-
-        .cartItem {
-          display: flex; gap: 10px; margin-bottom: 12px;
-          align-items: center; font-size: 14px;
-        }
-
-        .summary-row { display: flex; justify-content: space-between; margin-bottom: 14px; }
 
         .pay {
-          width: 100%; margin-top: 25px;
-          padding: 14px; border: none;
-          border-radius: 14px;
-          background: var(--cta);
-          color: var(--light);
-          font-weight: 600;
-          cursor: pointer;
-          display: flex; align-items: center; justify-content: center;
-          gap: 8px; transition: 0.3s;
-          text-decoration: none;
+          width: 100%; margin-top: 20px; padding: 15px; border: none;
+          border-radius: 12px; background: var(--cta); color: white;
+          font-weight: 700; cursor: pointer; display: flex; align-items: center;
+          justify-content: center; gap: 10px; text-decoration: none;
         }
 
-        @media (max-width: 900px) {
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
           .layout { grid-template-columns: 1fr; }
-          .navbar { flex-direction: column; gap: 18px; margin: 10px; }
+          .summary { position: relative; top: 0; order: -1; } /* Resumen arriba en tablets/movil */
+        }
+
+        @media (max-width: 768px) {
+          .navbar { margin: 0; border-radius: 0; padding: 15px 20px; }
+          .navSearch, .navMenu { display: none; }
+          .hamburger { display: block; }
+
+          .navMenu.open {
+            display: flex; flex-direction: column;
+            position: absolute; top: 100%; left: 0; width: 100%;
+            background: var(--primary); padding: 20px; gap: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+          }
+          
+          .products { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (max-width: 480px) {
+          .products { grid-template-columns: 1fr; }
+          .layout { padding: 0 15px 30px; }
         }
       `}</style>
 
       <div className="mainContainer">
         {/* NAVBAR */}
         <nav className="navbar">
-          <Link href="/" className="navLeft logo">
+          <Link href="/" className="logo">
             <i className="fa-solid fa-cart-shopping"></i>
-            <span>Mi Carrito</span>
+            <span>Dixema</span>
           </Link>
 
           <div className="navSearch">
@@ -262,9 +208,13 @@ export default function CarritoPage() {
             <input type="text" placeholder="Buscar..." />
           </div>
 
-          <ul className="navMenu">
+          <button className="hamburger" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            <i className={`fa-solid ${isMenuOpen ? 'fa-xmark' : 'fa-bars'}`}></i>
+          </button>
+
+          <ul className={`navMenu ${isMenuOpen ? 'open' : ''}`}>
             {Object.keys(navLinks).map((item) => (
-              <li key={item} onClick={() => setActiveNav(item)}>
+              <li key={item} onClick={() => { setActiveNav(item); setIsMenuOpen(false); }}>
                 <Link 
                   href={navLinks[item]} 
                   className={activeNav === item ? "active-link" : ""}
@@ -306,34 +256,37 @@ export default function CarritoPage() {
 
           {/* RESUMEN */}
           <aside className="summary">
-            <h2>Resumen</h2>
-            <div>
-              {cartEntries.length === 0 && <p style={{opacity: 0.6}}>Carrito vacío</p>}
+            <h2>Tu Pedido</h2>
+            <div style={{ maxHeight: '200px', overflowY: 'auto', marginBottom: '15px' }}>
+              {cartEntries.length === 0 && <p style={{opacity: 0.6}}>No hay productos seleccionados</p>}
               {cartEntries.map(([name, item]) => (
-                <div key={name} className="cartItem">
-                  <input 
-                    type="checkbox" 
-                    checked={item.selected} 
-                    onChange={() => toggleSelect(name)} 
-                  />
-                  <span>{name} ({item.quantity})</span>
+                <div key={name} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px', fontSize: '14px' }}>
+                  <label style={{ display: 'flex', gap: '10px', cursor: 'pointer' }}>
+                    <input 
+                      type="checkbox" 
+                      checked={item.selected} 
+                      onChange={() => toggleSelect(name)} 
+                    />
+                    {name} (x{item.quantity})
+                  </label>
+                  <span>${(item.price * item.quantity).toLocaleString()}</span>
                 </div>
               ))}
             </div>
 
-            <div className="summary-row" style={{ marginTop: '20px', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '15px' }}>
-              <span>Productos</span>
-              <strong>{totalItems}</strong>
+            <div style={{ borderTop: '1px solid rgba(255,255,255,0.2)', paddingTop: '15px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
+                <span>Total Items:</span>
+                <strong>{totalItems}</strong>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.4rem' }}>
+                <span>Total:</span>
+                <strong style={{ color: 'var(--cta)' }}>${totalPrice.toLocaleString()}</strong>
+              </div>
             </div>
 
-            <div className="summary-row">
-              <span>Total</span>
-              <strong>${totalPrice.toLocaleString()} MX</strong>
-            </div>
-
-            {/* BOTÓN DE COMPRA: Redirige a la página de pago */}
             <Link href="/forma_de_pago" className="pay">
-                <i className="fa-solid fa-credit-card"></i> Comprar
+                <i className="fa-solid fa-credit-card"></i> Finalizar Compra
             </Link>
           </aside>
         </main>
