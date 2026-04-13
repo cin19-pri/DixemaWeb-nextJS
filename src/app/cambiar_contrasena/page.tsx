@@ -33,17 +33,16 @@ export default function CambiarContrasena() {
     const passwordsMatch = password === confirmPassword;
 
     if (hasMinLength && hasUpperCase && hasNumberOrSymbol && passwordsMatch) {
-      // Si todo es correcto, ocultamos error y redirigimos
       if (errorAlert) errorAlert.style.display = "none";
       console.log("Contraseña válida, redirigiendo...");
-      router.push("bienvenida"); 
+      
+      // REDIRECCIÓN: Ajustada al nombre de tu carpeta "vienvenida"
+      router.push("/bienvenida"); 
     } else {
-      // Si falla algo, mostramos la alerta y NO redirigimos
       if (errorAlert) {
         errorAlert.style.display = "flex";
-        // Opcional: ocultar la alerta automáticamente después de 3 segundos
         setTimeout(() => {
-          errorAlert.style.display = "none";
+          if (errorAlert) errorAlert.style.display = "none";
         }, 3000);
       }
     }

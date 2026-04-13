@@ -123,7 +123,7 @@ export default function DashboardPage() {
             <Bell size={20} />
             <span>Notificaciones</span>
           </Link>
-          <Link href="/profile_proveedor" className="nav-item">
+          <Link href="#" className="nav-item">
             <User size={20} />
             <span>Perfil</span>
           </Link>
