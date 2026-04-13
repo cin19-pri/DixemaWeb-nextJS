@@ -106,12 +106,6 @@ export default function Navbar({ onSearch }) {
         </li>
 
         <li>
-          <Link href="/ayuda" className={styles.navLink}>
-            <i className="bx bx-help-circle"></i> Ayuda
-          </Link>
-        </li>
-
-        <li>
           <Link href="/categorias" className={styles.navLink}>
             <i className="bx bx-grid-alt"></i> Categorías
           </Link>
