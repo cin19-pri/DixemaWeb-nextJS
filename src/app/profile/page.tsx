@@ -8,7 +8,7 @@ export default function ProfilePage() {
       <div className="profile-container">
         {/* Header */}
         <header className="profile-header">
-          <Link href="/gestion_producto" className="back-btn">
+          <Link href="/perfilusuario" className="back-btn">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
@@ -131,7 +131,7 @@ export default function ProfilePage() {
                 <span className="text">Política de privacidad</span>
               </div>
               <div>
-                <Link href="../" className="link">
+                <Link href="" className="link">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="15"
@@ -161,7 +161,7 @@ export default function ProfilePage() {
                 <span className="text">Idioma</span>
               </div>
               <div>
-                <Link href="../" className="link">
+                <Link href="" className="link">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="15"
@@ -191,7 +191,7 @@ export default function ProfilePage() {
                 <span className="text">Ayuda & Soporte</span>
               </div>
               <div>
-                <Link href="../" className="link">
+                <Link href="" className="link">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="15"

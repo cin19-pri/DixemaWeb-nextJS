@@ -107,13 +107,6 @@ export default function DashboardPage() {
       <aside className={`sidebar ${isMenuOpen ? "open" : ""}`}>
         <div className="logo-section"><span className="logo-text">Dixema</span></div>
         <nav className="nav-menu">
-<<<<<<< HEAD
-          <Link href="/gestion_producto" className="nav-item active">Gestión</Link>
-          <Link href="/dashboard" className="nav-item">Dashboard</Link>
-          <Link href="/nuevo_producto" className="nav-item">Añadir nuevo producto</Link>
-          <Link href="/notificaciones" className="nav-item">Notificaciones</Link>
-          <Link href="/profile_proveedor" className="nav-item">Perfil</Link>
-=======
           <Link href="/gestion_producto" className={`nav-item ${pathname === '/gestion_producto' ? 'active' : ''}`}>
             <Package size={20} />
             <span>Gestión</span>
@@ -130,11 +123,10 @@ export default function DashboardPage() {
             <Bell size={20} />
             <span>Notificaciones</span>
           </Link>
-          <Link href="#" className="nav-item">
+          <Link href="/profile_proveedor" className="nav-item">
             <User size={20} />
             <span>Perfil</span>
           </Link>
->>>>>>> c279066bcc94da0c281cf56bec801205a6c7a42f
         </nav>
         
         <div className="sidebar-footer">
