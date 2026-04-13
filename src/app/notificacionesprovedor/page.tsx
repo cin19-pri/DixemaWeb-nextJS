@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
-import styles from "./notificacionesprovedor.module.css";
+import styles from "./notificaciones.module.css";
 
 export default function Notificaciones() {
   const router = useRouter();
