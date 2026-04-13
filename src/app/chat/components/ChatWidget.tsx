@@ -13,7 +13,7 @@ export default function ChatWidget() {
         className="chat-bubble"
         onClick={() => setOpen(!open)}
       >
-        💬
+        <i className="bx bx-message-dots"></i>
       </div>
 
       {/* VENTANA */}
