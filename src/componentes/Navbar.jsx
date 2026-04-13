@@ -71,20 +71,12 @@ export default function Navbar({ onSearch }) {
           </Link>
 
           {/* COMPRAS */}
-          <Link href="/miscompras" className={styles.navIcon}>
+          <Link href="/carrito" className={styles.navIcon}>
             <i className="bx bx-cart"></i> Mis compras
           </Link>
 
           {/* USUARIO */}
           <div className={styles.userInfo}>
-            <div className={styles.userGroup}>
-              <img
-                src="/img/avatar.png.png"
-                alt="user"
-                className={styles.userAvatar}
-              />
-              <span className={styles.userName}>Manuel Mendoza</span>
-            </div>
             <button onClick={() => handleLogout()} className={styles.btnlogout}>
               Cerrar Sesión
             </button>
