@@ -109,7 +109,8 @@ export default function Navbar({ onSearch }) {
           <Link href="/categorias" className={styles.navLink}>
             <i className="bx bx-grid-alt"></i> Categorías
           </Link>
-          /*comentario xx, favor de ignorar es para una tarea */
+          /*comentario xx, favor de ignorar es para una tarea */ /*comentario de
+          pruueba x, again */
         </li>
       </ul>
     </nav>
