@@ -2,6 +2,7 @@
 
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { logoutUser } from "@/actions/auth";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -199,10 +200,20 @@ export default function DashboardPage() {
         </nav>
 
         <div className="sidebar-footer">
-          <Link href="/bienvenida" className="nav-item logout-link">
+          <button
+            onClick={() => logoutUser("/login_proveedor")}
+            className="nav-item logout-link"
+            style={{
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              width: "100%",
+              textAlign: "left",
+            }}
+          >
             <LogOut size={20} />
             <span>Cerrar sesión</span>
-          </Link>
+          </button>
         </div>
       </aside>
 

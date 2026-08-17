@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect } from "react"; 
-import { usePathname } from "next/navigation";
-import "./registro_usuario.css"; 
+import { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import "./registro_usuario.css";
 import Link from "next/link";
 import Script from "next/script";
 import Image from "next/image";
+import { registerBuyer } from "@/actions/auth"; // Importamos la Server Action
 
 declare global {
   interface Window {
@@ -15,40 +16,70 @@ declare global {
 
 export default function RegistroUsuario() {
   const pathname = usePathname();
+  const router = useRouter();
 
-  // Eliminamos el estado 'mounted' que causaba el error y usamos solo el pathname
+  // Estados para capturar las entradas del usuario
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    name: "",
+    phone: "",
+  });
+
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+
   useEffect(() => {
-    // Un pequeño delay asegura que el DOM esté listo antes de ejecutar el JS del ojo
     const timer = setTimeout(() => {
       if (window.iniciarLogicaPassword) {
         window.iniciarLogicaPassword();
       }
     }, 100);
-    
+
     return () => clearTimeout(timer);
-  }, [pathname]); 
+  }, [pathname]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setErrorMsg("");
+
+    const res = await registerBuyer(formData);
+
+    if (res.success) {
+      // Redirigir al login o al inicio tras registrarse con éxito
+      router.push("/iniciousuarios");
+    } else {
+      setErrorMsg(res.error || "Ocurrió un error");
+      setLoading(false);
+    }
+  };
 
   return (
-    /* Usamos el pathname como key aquí para forzar a React a re-renderizar 
-       todo el bloque y que las letras no desaparezcan al navegar */
     <div className="main-wrapper-register" key={pathname}>
-      <Script 
-        src="/scripts/login.js" 
-        strategy="afterInteractive" 
+      <Script
+        src="/scripts/login.js"
+        strategy="afterInteractive"
         onLoad={() => window.iniciarLogicaPassword?.()}
       />
 
       <div className="main-container">
         <div className="form-section">
-          {/* Título principal solicitado */}
-          <h1>Bienvenidos a<br /> <span>DIXEMA</span></h1>
-          <p className="subtitle">Llena cada espacio con tu información o inicia sesión con Google</p>
+          <h1>
+            Bienvenidos a<br /> <span>DIXEMA</span>
+          </h1>
+          <p className="subtitle">
+            Llena cada espacio con tu información o inicia sesión con Google
+          </p>
 
-          {/* Botón de Google: Delgado, largo y fuente Poppins */}
           <button type="button" className="google-login-btn">
-            <Image 
-              src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" 
-              alt="Google Logo" 
+            <Image
+              src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+              alt="Google Logo"
               width={18}
               height={18}
             />
@@ -57,38 +88,64 @@ export default function RegistroUsuario() {
 
           <div className="divider">Datos de usuario</div>
 
-          <form action="#" id="registrationForm">
+          {errorMsg && (
+            <p
+              style={{
+                color: "#d9534f",
+                textAlign: "center",
+                marginBottom: "10px",
+                fontSize: "0.85rem",
+              }}
+            >
+              {errorMsg}
+            </p>
+          )}
+
+          <form onSubmit={handleSubmit} id="registrationForm">
             <div className="input-group">
-              <input type="email" placeholder="Email" required />
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
             </div>
-            
+
             <div className="input-group password-wrapper">
-              <input type="password" id="password" placeholder="Password" required />
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
               <i className="fa-solid fa-eye" id="togglePassword"></i>
             </div>
 
             <div className="input-group">
-              <input type="text" placeholder="Nombre" required />
+              <input
+                type="text"
+                name="name"
+                placeholder="Nombre completo"
+                value={formData.name}
+                onChange={handleChange}
+                required
+              />
             </div>
 
             <div className="input-group">
-              <input type="text" placeholder="Calle" required />
-            </div>
-
-            <div className="input-group">
-              <input type="text" placeholder="Colonia" required />
-            </div>
-
-            <div className="input-group">
-              <input type="text" placeholder="Estado" required />
-            </div>
-
-            <div className="input-group">
-              <input type="text" placeholder="Municipio" required />
-            </div>
-
-            <div className="input-group">
-              <input type="tel" placeholder="Número de teléfono" required />
+              <input
+                type="tel"
+                name="phone"
+                placeholder="Número de teléfono"
+                value={formData.phone}
+                onChange={handleChange}
+                required
+              />
             </div>
 
             <div className="form-options">
@@ -97,8 +154,8 @@ export default function RegistroUsuario() {
               </label>
             </div>
 
-            <button type="submit" className="btn-submit">
-              Crear cuenta
+            <button type="submit" className="btn-submit" disabled={loading}>
+              {loading ? "Guardando..." : "Crear cuenta"}
               <div className="arrow-wrapper">
                 <div className="arrow"></div>
               </div>

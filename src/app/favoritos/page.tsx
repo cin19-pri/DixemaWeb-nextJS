@@ -10,7 +10,7 @@ export default function Favoritos() {
 
   return (
     <div className={styles.page}>
-      <Navbar />
+      <Navbar onSearch={() => {}} />
 
       <div className={styles.container}>
         <h1 className={styles.title}>Mis Favoritos</h1>

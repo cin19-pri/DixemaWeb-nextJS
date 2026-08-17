@@ -29,7 +29,8 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts",
-    "src/componentes/Footer.jsx"
+    "src/componentes/Footer.jsx",
+    "prisma.config.ts.bak"
   ],
   "exclude": ["node_modules"]
 }
