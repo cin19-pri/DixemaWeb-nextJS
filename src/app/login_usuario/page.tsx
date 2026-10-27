@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
-import { usePathname } from "next/navigation"; // Importamos usePathname para la estabilidad visual
+import { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import "./login_usuario.css";
 import Link from "next/link";
 import Script from "next/script";
 import Image from "next/image";
+import { loginUser } from "@/actions/auth"; // Importamos la Server Action
 
 declare global {
   interface Window {
@@ -13,10 +14,15 @@ declare global {
   }
 }
 
-export default function LoginPage() {
-  const pathname = usePathname(); // Detecta la ruta actual
+export default function LoginUsuario() {
+  const pathname = usePathname();
+  const router = useRouter();
 
-  // Esta lógica asegura que el evento del ojo se vincule cada vez que entras a la página
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+
   useEffect(() => {
     const timer = setTimeout(() => {
       if (window.iniciarLogicaPassword) {
@@ -27,17 +33,28 @@ export default function LoginPage() {
     return () => clearTimeout(timer);
   }, [pathname]);
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setErrorMsg("");
+
+    const res = await loginUser({ email, password });
+
+    if (res.success) {
+      // Redirigir a la vista de inicio para compradores
+      router.push("/iniciousuarios");
+    } else {
+      setErrorMsg(res.error || "Credenciales incorrectas");
+      setLoading(false);
+    }
+  };
+
   return (
-    /* Agregamos la key basada en pathname para forzar el repintado de los títulos */
     <div className="main-wrapper-login" key={pathname}>
       <Script
         src="/scripts/login.js"
         strategy="afterInteractive"
-        onLoad={() => {
-          if (window.iniciarLogicaPassword) {
-            window.iniciarLogicaPassword();
-          }
-        }}
+        onLoad={() => window.iniciarLogicaPassword?.()}
       />
 
       <div className="main-container">
@@ -46,7 +63,7 @@ export default function LoginPage() {
             Bienvenidos
             <br /> <span>Nuevamente</span>
           </h1>
-          <p className="subtitle">Coloca los datos correspondientes</p>
+          <p className="subtitle">Coloca tus credenciales para ingresar</p>
 
           <button type="button" className="google-login-btn">
             <Image
@@ -55,14 +72,33 @@ export default function LoginPage() {
               width={18}
               height={18}
             />
-            <span>Inicia con Google</span>
+            <span>Inicia sesión con Google</span>
           </button>
 
-          <div className="divider">tambien puedes iniciar con</div>
+          <div className="divider">o con tu correo</div>
 
-          <form action="#">
+          {errorMsg && (
+            <p
+              style={{
+                color: "#d9534f",
+                textAlign: "center",
+                marginBottom: "10px",
+                fontSize: "0.85rem",
+              }}
+            >
+              {errorMsg}
+            </p>
+          )}
+
+          <form onSubmit={handleSubmit}>
             <div className="input-group">
-              <input type="email" placeholder="Email" required />
+              <input
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
             </div>
 
             <div className="input-group password-wrapper">
@@ -70,6 +106,8 @@ export default function LoginPage() {
                 type="password"
                 id="password"
                 placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 required
               />
               <i className="fa-solid fa-eye" id="togglePassword"></i>
@@ -79,23 +117,23 @@ export default function LoginPage() {
               <label>
                 <input type="checkbox" /> Recordar contraseña
               </label>
-              {/* Ruta corregida a /olvide_contrasena para evitar errores de servidor */}
               <Link href="/olvide_contrasena" className="forgot-link">
                 Olvidé mi contraseña
               </Link>
             </div>
-            <Link href="/iniciousuarios" type="submit" className="btn-submit">
-              Iniciar
+
+            <button type="submit" className="btn-submit" disabled={loading}>
+              {loading ? "Entrando..." : "Iniciar"}
               <div className="arrow-wrapper">
                 <div className="arrow"></div>
               </div>
-            </Link>
+            </button>
           </form>
 
           <p className="footer-text">
-            ¿Aun no tienes una cuenta?{" "}
+            ¿Aún no tienes una cuenta?{" "}
             <Link href="/registro_usuario" className="no-underline">
-              Registrate aqui
+              Regístrate aquí
             </Link>
           </p>
         </div>

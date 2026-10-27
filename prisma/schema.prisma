@@ -1,0 +1,299 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==========================================
+// 1. ENUMS (Roles y Estados)
+// ==========================================
+
+enum Role {
+  BUYER
+  SELLER
+  ADMIN
+}
+
+enum OrderStatus {
+  PENDING
+  PAYMENT_CONFIRMED
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+enum QuoteStatus {
+  PENDING
+  ANSWERED
+  ACCEPTED
+  REJECTED
+}
+
+// ==========================================
+// 2. USUARIOS, EMPRESAS Y AUTENTICACIÓN
+// ==========================================
+
+model User {
+  id                 String              @id @default(uuid())
+  email              String              @unique
+  passwordHash       String?
+  name               String
+  phone              String?
+  role               Role                @default(BUYER)
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+
+  companyId          String?
+  company            Company?            @relation(fields: [companyId], references: [id])
+  
+  // Relaciones
+  orders             Order[]             @relation("BuyerOrders")
+  quotes             QuoteRequest[]      @relation("BuyerQuotes")
+  favorites          Favorite[]
+  cart               Cart?
+  sentMessages       Message[]           @relation("SentMessages")
+  conversations      ConversationParticipant[]
+  notifications      Notification[]
+  verificationTokens VerificationToken[]
+}
+
+model Company {
+  id          String    @id @default(uuid())
+  legalName   String
+  rfc         String?   @unique
+  description String?
+  logoUrl     String?
+  website     String?
+  isVerified  Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  users       User[]
+  products    Product[]
+  addresses   Address[]
+}
+
+model Address {
+  id           String   @id @default(uuid())
+  companyId    String
+  company      Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  street       String
+  numExt       String
+  numInt       String?
+  neighborhood String
+  city         String
+  state        String
+  zipCode      String
+  country      String   @default("México")
+  isDefault    Boolean  @default(false)
+
+  orders       Order[]
+}
+
+model VerificationToken {
+  id        String   @id @default(uuid())
+  code      String   // Código numérico o token
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+// ==========================================
+// 3. CATÁLOGO, FAVORITOS Y CARRITO
+// ==========================================
+
+model Category {
+  id          String    @id @default(uuid())
+  name        String    @unique
+  slug        String    @unique
+  description String?
+  products    Product[]
+}
+
+model Product {
+  id             String          @id @default(uuid())
+  title          String
+  slug           String          @unique
+  description    String
+  sku            String?         @unique
+  basePrice      Float
+  minOrderQty    Int             @default(1)
+  stock          Int             @default(0)
+  isActive       Boolean         @default(true)
+  images         String[]
+  
+  companyId      String
+  company        Company         @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  
+  categoryId     String
+  category       Category        @relation(fields: [categoryId], references: [id])
+  
+  wholesaleTiers WholesaleTier[]
+  orderItems     OrderItem[]
+  quoteItems     QuoteItem[]
+  favoritedBy    Favorite[]
+  cartItems      CartItem[]
+
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+}
+
+model WholesaleTier {
+  id          String  @id @default(uuid())
+  productId   String
+  product     Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  minQuantity Int
+  maxQuantity Int?
+  unitPrice   Float
+}
+
+model Favorite {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, productId]) // Un usuario solo puede marcar 1 vez como favorito el mismo producto
+}
+
+model Cart {
+  id        String     @id @default(uuid())
+  userId    String     @unique
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items     CartItem[]
+  updatedAt DateTime   @updatedAt
+}
+
+model CartItem {
+  id        String   @id @default(uuid())
+  cartId    String
+  cart      Cart     @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id])
+  quantity  Int      @default(1)
+}
+
+// ==========================================
+// 4. CHAT Y NOTIFICACIONES
+// ==========================================
+
+model Conversation {
+  id           String                    @id @default(uuid())
+  createdAt    DateTime                  @default(now())
+  updatedAt    DateTime                  @updatedAt
+  participants ConversationParticipant[]
+  messages     Message[]
+}
+
+model ConversationParticipant {
+  id             String       @id @default(uuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([conversationId, userId])
+}
+
+model Message {
+  id             String       @id @default(uuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  senderId       String
+  sender         User         @relation("SentMessages", fields: [senderId], references: [id])
+  content        String
+  isRead         Boolean      @default(false)
+  createdAt      DateTime     @default(now())
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  message   String
+  isRead    Boolean  @default(false)
+  link      String?  // Opcional: redirección a una orden o chat específico
+  createdAt DateTime @default(now())
+}
+
+// ==========================================
+// 5. COTIZACIONES Y ÓRDENES
+// ==========================================
+
+model QuoteRequest {
+  id          String      @id @default(uuid())
+  buyerId     String
+  buyer       User        @relation("BuyerQuotes", fields: [buyerId], references: [id])
+  status      QuoteStatus @default(PENDING)
+  totalAmount Float?
+  notes       String?
+  
+  items       QuoteItem[]
+  order       Order?
+
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model QuoteItem {
+  id          String       @id @default(uuid())
+  quoteId     String
+  quote       QuoteRequest @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  productId   String
+  product     Product      @relation(fields: [productId], references: [id])
+  quantity    Int
+  targetPrice Float?
+}
+
+model Order {
+  id              String          @id @default(uuid())
+  orderNumber     String          @unique
+  buyerId         String
+  buyer           User            @relation("BuyerOrders", fields: [buyerId], references: [id])
+  
+  addressId       String
+  shippingAddress Address         @relation(fields: [addressId], references: [id])
+  
+  quoteId         String?         @unique
+  quote           QuoteRequest?   @relation(fields: [quoteId], references: [id])
+  
+  status          OrderStatus     @default(PENDING)
+  totalAmount     Float
+  
+  items           OrderItem[]
+
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+}
+
+model OrderItem {
+  id        String  @id @default(uuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int
+  unitPrice Float
+}
+
+// ==========================================
+// 6. OLVIDAR CONTRASEÑA
+// ==========================================
+model PasswordResetToken {
+  id        String   @id @default(uuid())
+  email     String
+  token     String 
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([email])
+}

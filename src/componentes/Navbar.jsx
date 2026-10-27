@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { handleLogout } from "../app/actions";
+import { logoutUser } from "@/actions/auth";
 import Image from "next/image";
 import { useShop } from "../context/ShopContext";
 import styles from "../app/iniciousuarios/iniciousuarios.module.css";
@@ -77,7 +78,10 @@ export default function Navbar({ onSearch }) {
 
           {/* USUARIO */}
           <div className={styles.userInfo}>
-            <button onClick={() => handleLogout()} className={styles.btnlogout}>
+            <button
+              onClick={() => logoutUser("/login_usuario")}
+              className={styles.btnlogout}
+            >
               Cerrar Sesión
             </button>
           </div>
