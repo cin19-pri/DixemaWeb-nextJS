@@ -1,13 +1,36 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { jwtVerify } from "jose";
 
-const secretKey =
-  process.env.SESSION_SECRET || "super-clave-secreta-dixema-2026";
+const secretKey = process.env.SESSION_SECRET;
+if (!secretKey) {
+  throw new Error(
+    "SESSION_SECRET is required. Set it in your environment before starting the app.",
+  );
+}
 const encodedKey = new TextEncoder().encode(secretKey);
 
-// Define las rutas que quieres proteger
-const protectedBuyerRoutes = ["/iniciousuarios", "/carrito", "/mis-compras"];
-const protectedSellerRoutes = ["/gestion_producto", "/dashboard_proveedor"];
+type UserRole = "BUYER" | "SELLER" | "ADMIN";
+type Session = { userId: string; role: UserRole; email: string };
+
+const protectedBuyerRoutes = [
+  "/carrito",
+  "/favoritos",
+  "/forma_de_pago",
+  "/notificaciones",
+  "/perfilusuario",
+  "/iniciousuarios",
+  "/categorias",
+  "/mis-compras",
+];
+const protectedSellerRoutes = [
+  "/nuevo_producto",
+  "/gestion_producto",
+  "/dashboard",
+  "/notificacionesprovedor",
+  "/profile_proveedor",
+  "/dashboard_proveedor",
+];
+const authenticatedRoutes = ["/chat"];
 const authRoutes = [
   "/login_usuario",
   "/login_proveedor",
@@ -19,49 +42,59 @@ export async function proxy(request: NextRequest) {
   const path = request.nextUrl.pathname;
   const sessionCookie = request.cookies.get("session")?.value;
 
-  // Verificar si hay una sesión válida
-  let session = null;
+  let session: Session | null = null;
   if (sessionCookie) {
     try {
       const { payload } = await jwtVerify(sessionCookie, encodedKey);
-      session = payload as { userId: string; role: string; email: string };
-    } catch (e) {
-      // Si el token falló o expiró, dejamos session = null
+      const role = payload.role;
+      if (
+        typeof payload.userId === "string" &&
+        typeof payload.email === "string" &&
+        (role === "BUYER" || role === "SELLER" || role === "ADMIN")
+      ) {
+        session = { userId: payload.userId, email: payload.email, role };
+      }
+    } catch {
+      // An invalid or expired token is treated as an unauthenticated request.
     }
   }
 
-  // Normalizamos el rol a mayúsculas para evitar problemas de tipeo
-  const userRole = session?.role?.toUpperCase();
-  const isSeller = userRole === "SELLER" || userRole === "VENDEDOR";
-  const isBuyer = userRole === "BUYER" || userRole === "COMPRADOR";
+  const matchesRoute = (routes: string[]) =>
+    routes.some((route) => path === route || path.startsWith(`${route}/`));
+  const isBuyerRoute = matchesRoute(protectedBuyerRoutes);
+  const isSellerRoute = matchesRoute(protectedSellerRoutes);
+  const isAuthenticatedRoute = matchesRoute(authenticatedRoutes);
+  const isAuthRoute = matchesRoute(authRoutes);
 
-  const isBuyerRoute = protectedBuyerRoutes.some((route) =>
-    path.startsWith(route),
-  );
-  const isSellerRoute = protectedSellerRoutes.some((route) =>
-    path.startsWith(route),
-  );
-  const isAuthRoute = authRoutes.some((route) => path.startsWith(route));
-
-  // 1. Si NO hay sesión y trata de entrar a ruta protegida -> Login
-  if ((isBuyerRoute || isSellerRoute) && !session) {
-    const redirectUrl = isSellerRoute ? "/login_proveedor" : "/login_usuario";
+  if ((isBuyerRoute || isSellerRoute || isAuthenticatedRoute) && !session) {
+    const redirectUrl = isSellerRoute
+      ? "/login_proveedor"
+      : "/login_usuario";
     return NextResponse.redirect(new URL(redirectUrl, request.url));
   }
 
-  // 2. Si SI hay sesión e intenta entrar a Login/Registro -> Redirigir a su Panel
   if (isAuthRoute && session) {
-    const destination = isSeller ? "/gestion_producto" : "/iniciousuarios";
+    const destination =
+      session.role === "SELLER" ? "/gestion_producto" : "/iniciousuarios";
     return NextResponse.redirect(new URL(destination, request.url));
   }
 
-  // 3. Control estricto de Roles entre vendedor y comprador
-  if (isSellerRoute && !isSeller) {
-    return NextResponse.redirect(new URL("/iniciousuarios", request.url));
+  if (isSellerRoute && session?.role !== "SELLER") {
+    if (session?.role === "BUYER") {
+      return NextResponse.redirect(new URL("/iniciousuarios", request.url));
+    }
+    return NextResponse.json({ error: "Acceso no autorizado" }, { status: 403 });
   }
 
-  if (isBuyerRoute && !isBuyer) {
-    return NextResponse.redirect(new URL("/gestion_producto", request.url));
+  if (isBuyerRoute && session?.role !== "BUYER") {
+    if (session?.role === "SELLER") {
+      return NextResponse.redirect(new URL("/gestion_producto", request.url));
+    }
+    return NextResponse.json({ error: "Acceso no autorizado" }, { status: 403 });
+  }
+
+  if (isAuthenticatedRoute && session?.role === "ADMIN") {
+    return NextResponse.json({ error: "Acceso no autorizado" }, { status: 403 });
   }
 
   return NextResponse.next();
@@ -69,8 +102,21 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
+    "/carrito/:path*",
+    "/favoritos/:path*",
+    "/forma_de_pago/:path*",
+    "/notificaciones/:path*",
+    "/perfilusuario/:path*",
     "/iniciousuarios/:path*",
+    "/categorias/:path*",
+    "/mis-compras/:path*",
+    "/nuevo_producto/:path*",
     "/gestion_producto/:path*",
+    "/dashboard/:path*",
+    "/notificacionesprovedor/:path*",
+    "/profile_proveedor/:path*",
+    "/dashboard_proveedor/:path*",
+    "/chat/:path*",
     "/login_usuario",
     "/login_proveedor",
     "/registro_usuario",

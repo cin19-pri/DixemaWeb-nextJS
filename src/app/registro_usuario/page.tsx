@@ -6,7 +6,7 @@ import "./registro_usuario.css";
 import Link from "next/link";
 import Script from "next/script";
 import Image from "next/image";
-import { registerBuyer } from "@/actions/auth"; // Importamos la Server Action
+import { registerBuyer } from "@/actions/auth";
 
 declare global {
   interface Window {
@@ -18,16 +18,26 @@ export default function RegistroUsuario() {
   const pathname = usePathname();
   const router = useRouter();
 
-  // Estados para capturar las entradas del usuario
+  // Estados actualizados con todos los campos de la app móvil
   const [formData, setFormData] = useState({
     email: "",
     password: "",
     name: "",
+    region: "",
+    pais: "",
     phone: "",
+    address: "",
   });
 
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+
+  useEffect(() => {
+    const scrollableElement = document.querySelector(".form-section");
+    if (scrollableElement) {
+      scrollableElement.scrollTo(0, 0);
+    }
+  }, [pathname]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -102,47 +112,88 @@ export default function RegistroUsuario() {
           )}
 
           <form onSubmit={handleSubmit} id="registrationForm">
+            {/* Correo electrónico */}
             <div className="input-group">
               <input
                 type="email"
                 name="email"
-                placeholder="Email"
+                placeholder="Correo electrónico"
                 value={formData.email}
                 onChange={handleChange}
                 required
               />
             </div>
 
+            {/* Contraseña */}
             <div className="input-group password-wrapper">
               <input
                 type="password"
                 id="password"
                 name="password"
-                placeholder="Password"
+                placeholder="Contraseña"
                 value={formData.password}
                 onChange={handleChange}
                 required
+                minLength={8}
               />
               <i className="fa-solid fa-eye" id="togglePassword"></i>
             </div>
 
+            {/* Nombre completo */}
             <div className="input-group">
               <input
                 type="text"
                 name="name"
-                placeholder="Nombre completo"
+                placeholder="Nombre"
                 value={formData.name}
                 onChange={handleChange}
                 required
               />
             </div>
 
+            {/* Región */}
+            <div className="input-group">
+              <input
+                type="text"
+                name="region"
+                placeholder="Región"
+                value={formData.region}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            {/* País */}
+            <div className="input-group">
+              <input
+                type="text"
+                name="pais"
+                placeholder="País"
+                value={formData.pais}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            {/* Número de contacto */}
             <div className="input-group">
               <input
                 type="tel"
                 name="phone"
-                placeholder="Número de teléfono"
+                placeholder="Número de contacto"
                 value={formData.phone}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            {/* Dirección */}
+            <div className="input-group">
+              <input
+                type="text"
+                name="address"
+                placeholder="Dirección"
+                value={formData.address}
                 onChange={handleChange}
                 required
               />

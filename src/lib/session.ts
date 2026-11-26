@@ -1,8 +1,12 @@
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 
-const secretKey =
-  process.env.SESSION_SECRET || "super-clave-secreta-dixema-2026";
+const secretKey = process.env.SESSION_SECRET;
+if (!secretKey) {
+  throw new Error(
+    "SESSION_SECRET is required. Set it in your environment before starting the app.",
+  );
+}
 const encodedKey = new TextEncoder().encode(secretKey);
 
 export type SessionPayload = {

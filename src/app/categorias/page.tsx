@@ -28,6 +28,15 @@ export default function Categorias() {
       );
     }
   };
+  const [productos, setProductos] = useState([]);
+
+  useEffect(() => {
+    const guardados = localStorage.getItem("productos_dixema");
+
+    if (guardados) {
+      setProductos(JSON.parse(guardados));
+    }
+  }, []);
 
   const filteredProducts = products.filter((prod) => {
     const matchesSearch = prod.title
