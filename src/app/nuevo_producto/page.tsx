@@ -4,6 +4,11 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import {
+  crearProducto,
+  obtenerCategorias,
+  type CategoriaProducto,
+} from "@/actions/productos";
+import {
   PlusCircle,
   UploadCloud,
   Tag,
@@ -35,11 +40,16 @@ export default function AñadirProductoPage() {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [categorias, setCategorias] = useState<CategoriaProducto[]>([]);
+  const [isLoadingCategories, setIsLoadingCategories] = useState(true);
   const [nombre, setNombre] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [precioMenudeo, setPrecioMenudeo] = useState("");
   const [precioMayoreo, setPrecioMayoreo] = useState("");
+  const [cantidadMinimaMayoreo, setCantidadMinimaMayoreo] = useState("");
   const [stock, setStock] = useState("");
+  const [categoriaId, setCategoriaId] = useState("");
   const [medidas, setMedidas] = useState("");
   const [colores, setColores] = useState("");
   const [modelos, setModelos] = useState("");
@@ -48,6 +58,32 @@ export default function AñadirProductoPage() {
     if (!imagePreview) return;
     return () => URL.revokeObjectURL(imagePreview);
   }, [imagePreview]);
+
+  useEffect(() => {
+    let cancelled = false;
+    obtenerCategorias()
+      .then((result) => {
+        if (cancelled) return;
+        if (result.success) {
+          setCategorias(result.categorias);
+          setUploadError(null);
+        } else {
+          setUploadError(result.error);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setUploadError("No se pudieron cargar las categorías.");
+        }
+      })
+      .finally(() => {
+        if (!cancelled) setIsLoadingCategories(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   // --- 3. MANEJO DE IMAGEN ---
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,69 +95,80 @@ export default function AñadirProductoPage() {
     }
   };
 
-  // --- 4. FUNCIÓN PARA GUARDAR Y REDIRIGIR ---
+  // --- 4. FUNCIÓN PARA GUARDAR EL PRODUCTO ---
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     setIsSaving(true);
     setUploadError(null);
+    setSuccessMessage(null);
 
     try {
-      let imageUrl = "/images/lap.jpg";
-      if (selectedImage) {
-        const formData = new FormData();
-        formData.append("file", selectedImage);
-
-        const response = await fetch("/api/upload-image", {
-          method: "POST",
-          body: formData,
-        });
-        const result: unknown = await response.json();
-
-        if (!response.ok) {
-          const message =
-            typeof result === "object" &&
-            result !== null &&
-            "error" in result &&
-            typeof result.error === "string"
-              ? result.error
-              : "No se pudo subir la imagen.";
-          throw new Error(message);
-        }
-
-        if (
-          typeof result !== "object" ||
-          result === null ||
-          !("url" in result) ||
-          typeof result.url !== "string"
-        ) {
-          throw new Error("El servidor devolvió una URL de imagen inválida.");
-        }
-
-        imageUrl = result.url;
+      if (!selectedImage) {
+        throw new Error("Selecciona una imagen para el producto.");
       }
 
-      const nuevoProducto = {
-        id: Date.now(),
-        nombre,
+      const formData = new FormData();
+      formData.append("file", selectedImage);
+
+      const response = await fetch("/api/upload-image", {
+        method: "POST",
+        body: formData,
+      });
+      const uploadResult: unknown = await response.json();
+
+      if (!response.ok) {
+        const message =
+          typeof uploadResult === "object" &&
+          uploadResult !== null &&
+          "error" in uploadResult &&
+          typeof uploadResult.error === "string"
+            ? uploadResult.error
+            : "No se pudo subir la imagen.";
+        throw new Error(message);
+      }
+
+      if (
+        typeof uploadResult !== "object" ||
+        uploadResult === null ||
+        !("url" in uploadResult) ||
+        typeof uploadResult.url !== "string"
+      ) {
+        throw new Error("El servidor devolvió una URL de imagen inválida.");
+      }
+
+      const result = await crearProducto({
+        titulo: nombre,
         descripcion,
-        precio: precioMenudeo,
+        precioMenudeo,
         precioMayoreo,
-        unidades: stock,
+        cantidadMinimaMayoreo,
+        stock,
+        categoriaId,
+        imagen: uploadResult.url,
         medidas,
         colores,
         modelos,
-        imagen: imageUrl,
-        estatus: parseInt(stock) > 0 ? "Disponible" : "Agotado",
-      };
+      });
 
-      const productosExistentes = JSON.parse(
-        localStorage.getItem("productos_dixema") || "[]",
-      );
-      const nuevaLista = [...productosExistentes, nuevoProducto];
-      localStorage.setItem("productos_dixema", JSON.stringify(nuevaLista));
+      if (!result.success) {
+        setUploadError(result.error);
+        return;
+      }
 
-      router.push("/gestion_producto");
+      setSuccessMessage("El producto se creó correctamente.");
+      setNombre("");
+      setDescripcion("");
+      setPrecioMenudeo("");
+      setPrecioMayoreo("");
+      setCantidadMinimaMayoreo("");
+      setStock("");
+      setCategoriaId("");
+      setMedidas("");
+      setColores("");
+      setModelos("");
+      setSelectedImage(null);
+      setImagePreview(null);
     } catch (error) {
       setUploadError(
         error instanceof Error ? error.message : "No se pudo guardar el producto.",
@@ -201,6 +248,33 @@ export default function AñadirProductoPage() {
             <div className="form-column">
               <div className="form-section card-dixema">
                 <div className="input-group">
+                  <label htmlFor="categoria">Categoría</label>
+                  <select
+                    id="categoria"
+                    value={categoriaId}
+                    onChange={(e) => setCategoriaId(e.target.value)}
+                    className="input-dixema"
+                    required
+                    disabled={isLoadingCategories || categorias.length === 0}
+                  >
+                    <option value="">
+                      {isLoadingCategories
+                        ? "Cargando categorías..."
+                        : "Selecciona una categoría"}
+                    </option>
+                    {categorias.map((categoria) => (
+                      <option key={categoria.id} value={categoria.id}>
+                        {categoria.name}
+                      </option>
+                    ))}
+                  </select>
+                  {!isLoadingCategories && categorias.length === 0 && (
+                    <p role="alert" style={{ color: "#b42318" }}>
+                      No hay categorías disponibles. Contacta al administrador.
+                    </p>
+                  )}
+                </div>
+                <div className="input-group">
                   <label htmlFor="nombre">
                     <Tag size={16} /> Nombre del Producto
                   </label>
@@ -236,9 +310,23 @@ export default function AñadirProductoPage() {
                       value={precioMayoreo}
                       onChange={(e) => setPrecioMayoreo(e.target.value)}
                       className="input-dixema"
-                      required
                     />
                   </div>
+                </div>
+
+                <div className="input-group">
+                  <label htmlFor="cantidadMinimaMayoreo">
+                    Cantidad mínima para mayoreo
+                  </label>
+                  <input
+                    type="number"
+                    id="cantidadMinimaMayoreo"
+                    min="1"
+                    value={cantidadMinimaMayoreo}
+                    onChange={(e) => setCantidadMinimaMayoreo(e.target.value)}
+                    className="input-dixema"
+                    required={precioMayoreo !== ""}
+                  />
                 </div>
 
                 <div className="input-group">
@@ -301,6 +389,11 @@ export default function AñadirProductoPage() {
               {uploadError}
             </p>
           )}
+          {successMessage && (
+            <p role="status" style={{ color: "#067647" }}>
+              {successMessage}
+            </p>
+          )}
           <footer className="form-actions-bar">
             <button
               type="button"
@@ -312,7 +405,7 @@ export default function AñadirProductoPage() {
             <button
               type="submit"
               className="btn-primary-large"
-              disabled={isSaving}
+              disabled={isSaving || isLoadingCategories || categorias.length === 0}
             >
               <PlusCircle size={20} />{" "}
               {isSaving ? "Guardando..." : "Guardar Producto"}
