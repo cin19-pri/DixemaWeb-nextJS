@@ -240,6 +240,25 @@
     margin-left: 12px;
 }
 
+.stock-edit-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.stock-edit-row input {
+    width: 72px;
+    min-width: 0;
+    padding: 6px 8px;
+    border: 1px solid var(--color-borde);
+    border-radius: 8px;
+}
+
+.stock-edit-row .btn-edit-inline {
+    margin-left: auto;
+}
+
 
 /* --- 9. CALENDARIO --- */
 .calendar-widget {

@@ -28,6 +28,10 @@ export type ResultadoCrearProducto =
   | { success: true }
   | { success: false; error: string };
 
+export type ResultadoAccionProducto =
+  | { success: true }
+  | { success: false; error: string };
+
 function separarValores(value: string) {
   return value
     .split(",")
@@ -223,5 +227,122 @@ export async function crearProducto(
   revalidatePath("/gestion_producto");
   revalidatePath("/categorias");
 
+  return { success: true };
+}
+
+async function obtenerEmpresaDelProveedor(): Promise<
+  | { success: true; companyId: string }
+  | { success: false; error: string }
+> {
+  const session = await getSession();
+  if (!session || session.role !== "SELLER") {
+    return { success: false, error: "No tienes permiso para modificar productos." };
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { id: session.userId },
+    select: { companyId: true, role: true },
+  });
+
+  if (!user || user.role !== "SELLER" || !user.companyId) {
+    return {
+      success: false,
+      error: "Tu cuenta de proveedor no tiene una empresa vinculada.",
+    };
+  }
+
+  return { success: true, companyId: user.companyId };
+}
+
+export async function eliminarProducto(
+  id: string,
+): Promise<ResultadoAccionProducto> {
+  const empresa = await obtenerEmpresaDelProveedor();
+  if (!empresa.success) return empresa;
+  if (typeof id !== "string" || !id.trim()) {
+    return { success: false, error: "El producto indicado no es válido." };
+  }
+
+  const resultado = await prisma.$transaction(async (transaction) => {
+    const producto = await transaction.product.findFirst({
+      where: { id, companyId: empresa.companyId },
+      select: {
+        id: true,
+        _count: { select: { orderItems: true } },
+      },
+    });
+
+    if (!producto) {
+      return {
+        success: false as const,
+        error: "No se encontró el producto en tu catálogo.",
+      };
+    }
+
+    if (producto._count.orderItems > 0) {
+      const actualizacion = await transaction.product.updateMany({
+        where: { id: producto.id, companyId: empresa.companyId },
+        data: { isActive: false },
+      });
+      if (actualizacion.count === 0) {
+        return {
+          success: false as const,
+          error: "No se encontró el producto en tu catálogo.",
+        };
+      }
+    } else {
+      await transaction.cartItem.deleteMany({
+        where: { productId: producto.id },
+      });
+      await transaction.quoteItem.deleteMany({
+        where: { productId: producto.id },
+      });
+      const eliminacion = await transaction.product.deleteMany({
+        where: { id: producto.id, companyId: empresa.companyId },
+      });
+      if (eliminacion.count === 0) {
+        return {
+          success: false as const,
+          error: "No se encontró el producto en tu catálogo.",
+        };
+      }
+    }
+
+    return { success: true as const };
+  });
+
+  if (!resultado.success) return resultado;
+  revalidatePath("/gestion_producto");
+  revalidatePath("/categorias");
+  return resultado;
+}
+
+export async function actualizarStock(
+  id: string,
+  stock: number,
+): Promise<ResultadoAccionProducto> {
+  const empresa = await obtenerEmpresaDelProveedor();
+  if (!empresa.success) return empresa;
+  if (typeof id !== "string" || !id.trim()) {
+    return { success: false, error: "El producto indicado no es válido." };
+  }
+  if (!Number.isInteger(stock) || stock < 0) {
+    return {
+      success: false,
+      error: "El stock debe ser un número entero igual o mayor que 0.",
+    };
+  }
+
+  const resultado = await prisma.product.updateMany({
+    where: { id, companyId: empresa.companyId },
+    data: { stock },
+  });
+
+  if (resultado.count === 0) {
+    return { success: false, error: "No se encontró el producto en tu catálogo." };
+  }
+
+  revalidatePath("/gestion_producto");
+  revalidatePath("/categorias");
   return { success: true };
 }
