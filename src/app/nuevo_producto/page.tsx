@@ -32,6 +32,9 @@ export default function AñadirProductoPage() {
 
   // --- 2. ESTADOS DEL FORMULARIO ---
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
   const [nombre, setNombre] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [precioMenudeo, setPrecioMenudeo] = useState("");
@@ -41,46 +44,91 @@ export default function AñadirProductoPage() {
   const [colores, setColores] = useState("");
   const [modelos, setModelos] = useState("");
 
+  useEffect(() => {
+    if (!imagePreview) return;
+    return () => URL.revokeObjectURL(imagePreview);
+  }, [imagePreview]);
+
   // --- 3. MANEJO DE IMAGEN ---
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+      setSelectedImage(file);
+      setImagePreview(URL.createObjectURL(file));
+      setUploadError(null);
     }
   };
 
   // --- 4. FUNCIÓN PARA GUARDAR Y REDIRIGIR ---
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Creamos el objeto con el formato que necesitan tus otras pantallas
-    const nuevoProducto = {
-      id: Date.now(),
-      nombre,
-      descripcion,
-      precio: precioMenudeo, // Lo guardamos como 'precio' para compatibilidad
-      precioMayoreo,
-      unidades: stock, // Lo guardamos como 'unidades' para el Dashboard
-      medidas,
-      colores,
-      modelos,
-      imagen: imagePreview || "/images/lap.jpg",
-      estatus: parseInt(stock) > 0 ? "Disponible" : "Agotado",
-    };
+    setIsSaving(true);
+    setUploadError(null);
 
-    // Obtenemos lo existente, agregamos el nuevo y guardamos
-    const productosExistentes = JSON.parse(
-      localStorage.getItem("productos_dixema") || "[]",
-    );
-    const nuevaLista = [...productosExistentes, nuevoProducto];
-    localStorage.setItem("productos_dixema", JSON.stringify(nuevaLista));
+    try {
+      let imageUrl = "/images/lap.jpg";
+      if (selectedImage) {
+        const formData = new FormData();
+        formData.append("file", selectedImage);
 
-    // Redirección inmediata a Gestión
-    router.push("/gestion_producto");
+        const response = await fetch("/api/upload-image", {
+          method: "POST",
+          body: formData,
+        });
+        const result: unknown = await response.json();
+
+        if (!response.ok) {
+          const message =
+            typeof result === "object" &&
+            result !== null &&
+            "error" in result &&
+            typeof result.error === "string"
+              ? result.error
+              : "No se pudo subir la imagen.";
+          throw new Error(message);
+        }
+
+        if (
+          typeof result !== "object" ||
+          result === null ||
+          !("url" in result) ||
+          typeof result.url !== "string"
+        ) {
+          throw new Error("El servidor devolvió una URL de imagen inválida.");
+        }
+
+        imageUrl = result.url;
+      }
+
+      const nuevoProducto = {
+        id: Date.now(),
+        nombre,
+        descripcion,
+        precio: precioMenudeo,
+        precioMayoreo,
+        unidades: stock,
+        medidas,
+        colores,
+        modelos,
+        imagen: imageUrl,
+        estatus: parseInt(stock) > 0 ? "Disponible" : "Agotado",
+      };
+
+      const productosExistentes = JSON.parse(
+        localStorage.getItem("productos_dixema") || "[]",
+      );
+      const nuevaLista = [...productosExistentes, nuevoProducto];
+      localStorage.setItem("productos_dixema", JSON.stringify(nuevaLista));
+
+      router.push("/gestion_producto");
+    } catch (error) {
+      setUploadError(
+        error instanceof Error ? error.message : "No se pudo guardar el producto.",
+      );
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -123,7 +171,7 @@ export default function AñadirProductoPage() {
                   )}
                   <input
                     type="file"
-                    accept="image/*"
+                    accept="image/jpeg,image/png,image/webp"
                     onChange={handleImageChange}
                     className="file-input-hidden"
                     id="productImage"
@@ -248,6 +296,11 @@ export default function AñadirProductoPage() {
           </div>
 
           {/* Botones de Acción */}
+          {uploadError && (
+            <p role="alert" style={{ color: "#b42318" }}>
+              {uploadError}
+            </p>
+          )}
           <footer className="form-actions-bar">
             <button
               type="button"
@@ -256,8 +309,13 @@ export default function AñadirProductoPage() {
             >
               Cancelar
             </button>
-            <button type="submit" className="btn-primary-large">
-              <PlusCircle size={20} /> Guardar Producto
+            <button
+              type="submit"
+              className="btn-primary-large"
+              disabled={isSaving}
+            >
+              <PlusCircle size={20} />{" "}
+              {isSaving ? "Guardando..." : "Guardar Producto"}
             </button>
           </footer>
         </form>
