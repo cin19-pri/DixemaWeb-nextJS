@@ -6,7 +6,7 @@ import "./login_usuario.css";
 import Link from "next/link";
 import Script from "next/script";
 import Image from "next/image";
-import { loginUser } from "@/actions/auth"; // Importamos la Server Action
+import { loginUser } from "@/actions/auth";
 
 declare global {
   interface Window {
