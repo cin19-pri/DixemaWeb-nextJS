@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Navbar from "@/componentes/Navbar";
 import type { FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import {
@@ -59,6 +60,7 @@ export default function CheckoutClient({
 }: {
   initialData: CheckoutData;
 }) {
+  const [searchTerm, setSearchTerm] = useState("");
   const router = useRouter();
   const defaultAddress =
     initialData.addresses.find((address) => address.isDefault) ??
@@ -81,9 +83,8 @@ export default function CheckoutClient({
   );
 
   const selectedAddress =
-    initialData.addresses.find(
-      (address) => address.id === selectedAddressId,
-    ) ?? null;
+    initialData.addresses.find((address) => address.id === selectedAddressId) ??
+    null;
   const firstLineError = initialData.lines.find(
     (line) => line.validationError,
   )?.validationError;
@@ -138,14 +139,18 @@ export default function CheckoutClient({
         requiredAddressFields.some((value) => !value.trim()) ||
         !/^\d{5}$/.test(addressForm.zipCode)
       ) {
-        setError("Completa la dirección y verifica que el código postal tenga 5 dígitos.");
+        setError(
+          "Completa la dirección y verifica que el código postal tenga 5 dígitos.",
+        );
         return;
       }
     }
 
     const normalizedRfc = rfc.trim().toUpperCase();
     if (requiresInvoice && !RFC_PATTERN.test(normalizedRfc)) {
-      setError("Escribe un RFC válido de 12 o 13 caracteres para solicitar factura.");
+      setError(
+        "Escribe un RFC válido de 12 o 13 caracteres para solicitar factura.",
+      );
       return;
     }
 
@@ -163,7 +168,9 @@ export default function CheckoutClient({
       }
       setCreatedOrderNumber(result.orderNumber);
     } catch {
-      setError("No se pudo crear el pedido. Revisa tus datos e inténtalo de nuevo.");
+      setError(
+        "No se pudo crear el pedido. Revisa tus datos e inténtalo de nuevo.",
+      );
     } finally {
       setIsSaving(false);
     }
@@ -171,6 +178,7 @@ export default function CheckoutClient({
 
   return (
     <div className="checkout-wrapper">
+      <Navbar onSearch={setSearchTerm} />
       <div className="checkout-container">
         <header className="header-top">
           <button
@@ -182,7 +190,6 @@ export default function CheckoutClient({
             <span>Volver</span>
           </button>
           <div className="main-title-header">
-            <h1>Forma de Pago</h1>
             <p>Completa tus datos para procesar el pedido</p>
             <span className="title-underline" />
           </div>
@@ -244,7 +251,8 @@ export default function CheckoutClient({
                     {initialData.addresses.length > 0 && (
                       <p className="address-note">
                         Al guardar una dirección modificada se creará una nueva;
-                        las direcciones asociadas a pedidos anteriores no se alteran.
+                        las direcciones asociadas a pedidos anteriores no se
+                        alteran.
                       </p>
                     )}
                     <div className="form-grid">
@@ -505,8 +513,8 @@ export default function CheckoutClient({
                   </summary>
                   <p>
                     Los datos de entrega y, si solicitas factura, tu RFC se
-                    utilizarán para gestionar este pedido. Esta pantalla crea
-                    un pedido pendiente; el pago se completa en Mercado Pago.
+                    utilizarán para gestionar este pedido. Esta pantalla crea un
+                    pedido pendiente; el pago se completa en Mercado Pago.
                   </p>
                 </details>
                 <button
