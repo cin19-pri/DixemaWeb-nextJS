@@ -22,6 +22,7 @@ model User {
   cart               Cart?
   conversations      ConversationParticipant[]
   favorites          Favorite[]
+  addresses          Address[]
   sentMessages       Message[]                 @relation("SentMessages")
   notifications      Notification[]
   orders             Order[]                   @relation("BuyerOrders")
@@ -46,8 +47,9 @@ model Company {
 }
 
 model Address {
-  id           String  @id @default(uuid())
-  companyId    String
+  id           String   @id @default(uuid())
+  companyId    String?
+  userId       String?
   street       String
   numExt       String
   numInt       String?
@@ -55,10 +57,14 @@ model Address {
   city         String
   state        String
   zipCode      String
-  country      String  @default("México")
-  isDefault    Boolean @default(false)
-  company      Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  country      String   @default("México")
+  isDefault    Boolean  @default(false)
+  isActive     Boolean  @default(true)
+  company      Company? @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  user         User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
   orders       Order[]
+
+  @@index([userId, isActive])
 }
 
 model VerificationToken {
@@ -212,7 +218,17 @@ model Order {
   addressId       String
   quoteId         String?       @unique
   status          OrderStatus   @default(PENDING)
+  subtotal        Float
+  shippingCost    Float
+  taxAmount       Float
   totalAmount     Float
+  requiresInvoice Boolean       @default(false)
+  rfc             String?
+  paymentMethod   String?
+  mpPaymentId     String?       @unique
+  carrier         String?
+  trackingNumber  String?
+  shippedAt       DateTime?
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
   shippingAddress Address       @relation(fields: [addressId], references: [id])
